@@ -7,6 +7,18 @@ falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 3.5.11
+
+- `NexFusion` 3.5.11:
+  * X (Twitter) 12.38.1 Compatibility & Crash Resolution:
+    - Resolved `ClassCastException` on application launch caused by obfuscated empty presenter shift in X 12.38+ (`com.x.urt.g0.a`).
+    - Enforced runtime presenter interface assignability verification (`presenterInterface.isAssignableFrom(cls)`) and method return type validation in the timeline presenter funnel hook, guaranteeing hook stability.
+    - Added dynamic fallback resolution across common timeline presenter suffixes for future version resilience.
+    - Added promoted-item probe coverage for X 12.38+ obfuscated models (`k1`, `q1`, `e2`, `z1`, `a2`) and updated unit tests.
+    - Registered downloadable video metadata flag descriptor (`com.x.models.t4.g`).
+  * YouTube Ambient Mode Resilience:
+    - Verified dynamic recursive superclass field resolution (`findFieldRecursive`) for `CinematicContainerForceAnchors` and silent background diagnostics, ensuring zero on-screen toast errors on modern builds (e.g. 21.43+).
+
 ## 3.5.10
 
 - `NexFusion` 3.5.10:

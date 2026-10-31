@@ -59,18 +59,33 @@ class TwitterPatchesTest {
     fun `promoted-item probes mirror the upstream test sites`() {
         assertEquals(
             listOf(
+                // X 12.38+
+                "com.x.models.timelines.items.k1",
+                "com.x.models.timelines.items.q1",
+                "com.x.models.timelines.items.e2",
+                "com.x.models.timelines.items.z1",
+                "com.x.models.timelines.items.a2",
+                // X 12.37
                 "com.x.models.timelines.items.l1",
                 "com.x.models.timelines.items.r1",
                 "com.x.models.timelines.items.f2",
+                // X 12.35 - 12.36
                 "com.x.models.timelines.items.j1",
                 "com.x.models.timelines.items.p1",
+                // Shared across versions
                 "com.x.models.timelines.items.m0",
                 "com.x.models.timelines.items.y1",
                 "com.x.models.timelines.items.b2",
             ),
             PROMOTED_ITEM_PROBES.map { it.modelClass },
         )
-        assertEquals(listOf("e", "j", "h", "e", "j", "a", "a", "h"), PROMOTED_ITEM_PROBES.map { it.field })
-        assertEquals(listOf(null, null, null, null, null, "a", "b", null), PROMOTED_ITEM_PROBES.map { it.call })
+        assertEquals(
+            listOf("e", "j", "h", "a", "h", "e", "j", "h", "e", "j", "a", "a", "h"),
+            PROMOTED_ITEM_PROBES.map { it.field },
+        )
+        assertEquals(
+            listOf(null, null, null, "b", null, null, null, null, null, null, "a", "b", null),
+            PROMOTED_ITEM_PROBES.map { it.call },
+        )
     }
 }

@@ -14,7 +14,13 @@ internal data class AdProbe(val modelClass: String, val field: String, val call:
 
 /** The promoted shapes the Remove Ads preamble tests across X versions. */
 internal val PROMOTED_ITEM_PROBES = listOf(
-    // X 12.37+
+    // X 12.38+
+    AdProbe("com.x.models.timelines.items.k1", "e"), // promoted post marker
+    AdProbe("com.x.models.timelines.items.q1", "j"), // promoted rtb marker
+    AdProbe("com.x.models.timelines.items.e2", "h"), // promoted item variant
+    AdProbe("com.x.models.timelines.items.z1", "a", call = "b"), // promoted trend verdict
+    AdProbe("com.x.models.timelines.items.a2", "h"), // promoted user marker
+    // X 12.37
     AdProbe("com.x.models.timelines.items.l1", "e"), // promoted post marker
     AdProbe("com.x.models.timelines.items.r1", "j"), // promoted rtb marker
     AdProbe("com.x.models.timelines.items.f2", "h"), // promoted item variant
@@ -32,7 +38,8 @@ internal const val PROMOTED_ENTRY_ID = "promoted"
 
 /** X no-op presenter singletons across versions (implements com.x.presenter.a, renders nothing). */
 private val EMPTY_PRESENTER_CLASSES = listOf(
-    "com.x.urt.b0", // X 12.37+
+    "com.x.urt.g0", // X 12.38+
+    "com.x.urt.b0", // X 12.37
     "com.x.urt.f0", // X 12.35 - 12.36
 )
 
@@ -81,14 +88,33 @@ internal class TwitterAdFilter(private val classLoader: ClassLoader) {
     fun emptyPresenter(): Any? {
         if (!emptyPresenterResolved) {
             emptyPresenterResolved = true
+            val presenterInterface = runCatching { classLoader.loadClass("com.x.presenter.a") }.getOrNull()
             for (clsName in EMPTY_PRESENTER_CLASSES) {
                 emptyPresenter = runCatching {
                     val cls = classLoader.loadClass(clsName)
+                    if (presenterInterface != null && !presenterInterface.isAssignableFrom(cls)) {
+                        return@runCatching null
+                    }
                     XposedHelpers.getStaticObjectField(cls, "a")
                 }.getOrNull()
                 if (emptyPresenter != null) {
                     PatcherLog.info { "NexFusion: resolved X empty presenter via $clsName.a" }
                     break
+                }
+            }
+            if (emptyPresenter == null && presenterInterface != null) {
+                // Dynamic fallback across common urt presenter suffixes
+                for (name in listOf("g0", "b0", "f0", "h0", "i0", "j0", "k0", "l0", "m0", "n0", "a0", "c0", "d0", "e0")) {
+                    emptyPresenter = runCatching {
+                        val cls = classLoader.loadClass("com.x.urt.$name")
+                        if (presenterInterface.isAssignableFrom(cls)) {
+                            XposedHelpers.getStaticObjectField(cls, "a")
+                        } else null
+                    }.getOrNull()
+                    if (emptyPresenter != null) {
+                        PatcherLog.info { "NexFusion: dynamically resolved X empty presenter via com.x.urt.$name.a" }
+                        break
+                    }
                 }
             }
             if (emptyPresenter == null) {

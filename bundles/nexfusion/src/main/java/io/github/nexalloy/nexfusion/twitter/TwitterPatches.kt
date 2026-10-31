@@ -10,6 +10,7 @@ import io.github.nexalloy.IHook
 import io.github.nexalloy.IHookCallback
 import io.github.nexalloy.PatcherLog
 import io.github.nexalloy.patch
+import java.lang.reflect.Method
 
 // Ported from kveld9/kveld-extra-morphe-patches (GPL-3.0),
 // patches/src/main/kotlin/app/morphe/patches/twitter/ - the upstream patches rewrite smali at build
@@ -107,15 +108,20 @@ val TwitterPatches = arrayOf(
 
 // ---- Remove Ads ---------------------------------------------------------------------------------
 
-/** X 12.35's unified presenter funnel; every feed resolves item presenters through it. */
-private const val PRESENTER_FUNNEL_DESCRIPTOR =
-    "Lcom/x/urt/b;->a:(ILcom/x/models/timelines/items/o0;Lcom/x/navigation/in;" +
-        "Lcom/x/repositories/urt/r1;Lcom/x/urt/x0;)Lcom/x/presenter/a;"
+/** X 12.38+'s unified presenter funnel descriptor. */
+private const val PRESENTER_FUNNEL_DESCRIPTOR_12_38 =
+    "Lcom/x/urt/b;->a:(ILcom/x/models/timelines/items/o0;Lcom/x/navigation/no;" +
+        "Lcom/x/repositories/urt/w1;Lcom/x/urt/y0;)Lcom/x/presenter/a;"
 
 /** X 12.37.2's unified presenter funnel descriptor. */
 private const val PRESENTER_FUNNEL_DESCRIPTOR_12_37 =
     "Lcom/x/urt/b;->a:(ILcom/x/models/timelines/items/o0;Lcom/x/navigation/go;" +
         "Lcom/x/repositories/urt/u1;Lcom/x/urt/t0;)Lcom/x/presenter/a;"
+
+/** X 12.35's unified presenter funnel; every feed resolves item presenters through it. */
+private const val PRESENTER_FUNNEL_DESCRIPTOR =
+    "Lcom/x/urt/b;->a:(ILcom/x/models/timelines/items/o0;Lcom/x/navigation/in;" +
+        "Lcom/x/repositories/urt/r1;Lcom/x/urt/x0;)Lcom/x/presenter/a;"
 
 /** The Quick Promote tray composable the upstream patch drops. */
 private const val QUICK_PROMOTE_DESCRIPTOR =
@@ -137,7 +143,12 @@ private fun IHook.installTwitterAdSuppressor() {
             val item = param.args.getOrNull(1)
             if (item != null && filter.isPromoted(item)) {
                 val presenter = filter.emptyPresenter()
-                if (presenter != null) param.result = presenter
+                if (presenter != null) {
+                    val method = param.method
+                    if (method !is Method || method.returnType.isInstance(presenter)) {
+                        param.result = presenter
+                    }
+                }
             }
         }
     }
@@ -147,8 +158,9 @@ private fun IHook.installTwitterAdSuppressor() {
         block = adSuppressorBlock,
     )
     if (hookedFunnel == 0) {
-        hookCatching(PRESENTER_FUNNEL_DESCRIPTOR, adSuppressorBlock)
+        hookCatching(PRESENTER_FUNNEL_DESCRIPTOR_12_38, adSuppressorBlock)
         hookCatching(PRESENTER_FUNNEL_DESCRIPTOR_12_37, adSuppressorBlock)
+        hookCatching(PRESENTER_FUNNEL_DESCRIPTOR, adSuppressorBlock)
     }
     hookCatching(QUICK_PROMOTE_DESCRIPTOR) {
         before = { param -> param.result = null }
@@ -219,9 +231,10 @@ private fun IHook.installVideoDownloadUnlock() {
     installDownloadableFlag("com.x.models.v4", "j", "video")
     installDownloadableFlag("com.x.models.p4", "g", "GIF")
     installDownloadableFlag("com.x.models.s4", "g", "video meta")
-    // X 12.35:
+    // X 12.35 - 12.38:
     installDownloadableFlag("com.x.models.w4", "j", "video (legacy)")
     installDownloadableFlag("com.x.models.q4", "g", "GIF (legacy)")
+    installDownloadableFlag("com.x.models.t4", "g", "video meta (legacy)")
 }
 
 private fun IHook.installDownloadableFlag(className: String, fieldName: String, label: String) {
