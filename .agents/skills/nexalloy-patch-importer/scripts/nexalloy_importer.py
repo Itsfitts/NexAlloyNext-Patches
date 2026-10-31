@@ -174,6 +174,7 @@ class NexAlloyImporter:
         module_name = app_key.lower()
         src_root = os.path.join(self.repo_root, "bundles", module_name, "src", "main", "java")
         os.makedirs(src_root, exist_ok=True)
+
         # Copy build.gradle.kts from nxb_extended and rename module
         template_path = os.path.join(self.repo_root, "bundles", "nxb_extended", "build.gradle.kts")
         target_path = os.path.join(self.repo_root, "bundles", module_name, "build.gradle.kts")
@@ -183,16 +184,22 @@ class NexAlloyImporter:
             content = content.replace("nxb_extended", module_name)
             with open(target_path, "w", encoding="utf-8") as f:
                 f.write(content)
-        # Create minimal AndroidManifest and resources if not exist (reuse from nxb_extended)
+
+        # Copy AndroidManifest (and any resources) from the template bundle
         manifest_src = os.path.join(self.repo_root, "bundles", "nxb_extended", "src", "main", "AndroidManifest.xml")
         manifest_tgt = os.path.join(self.repo_root, "bundles", module_name, "src", "main", "AndroidManifest.xml")
         if os.path.exists(manifest_src):
             shutil.copy2(manifest_src, manifest_tgt)
-        # Ensure package directory exists for Kotlin file
+
+        # Package directory for Kotlin files
         pkg_dir = os.path.join(src_root, "io", "github", "nexalloy", module_name)
         os.makedirs(pkg_dir, exist_ok=True)
         return os.path.join(pkg_dir, f"{pascal_app}Patches.kt")
 
+    # -------------------------------------------------------------------------
+    # PATCH TRANSLATION
+    # -------------------------------------------------------------------------
+    def translate_patches_for_app(self, app_key: str, app_info: dict, source_dir: str) -> str:
         """Translate upstream patches for an app into Kotlin runtime hooks."""
         pascal_app = "".join(w.capitalize() for w in re.split(r"[^a-zA-Z0-9]", app_key))
         patch_declarations = []
@@ -210,11 +217,10 @@ class NexAlloyImporter:
                 with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                     src = f.read()
 
-                # Detect boolean return replacement (e.g. const/4 v0, 0x1 / return v0)
+                # Boolean return hooks
                 if "const/4 v0, 0x1" in src or "returnConstant(true)" in src:
-                    # Extract fingerprint strings
                     fps = re.findall(r'strings\s*=\s*listOf\(([^)]+)\)', src)
-                    fp_args = fps[0] if fps else '"true"'
+                    fp_args = fps[0] if fps else "\"true\""
                     body_code += f"""        runCatching {{
             val fp = Fingerprint(
                 returnType = "Z",
@@ -227,7 +233,7 @@ class NexAlloyImporter:
 """
                 elif "const/4 v0, 0x0" in src or "returnConstant(false)" in src:
                     fps = re.findall(r'strings\s*=\s*listOf\(([^)]+)\)', src)
-                    fp_args = fps[0] if fps else '"false"'
+                    fp_args = fps[0] if fps else "\"false\""
                     body_code += f"""        runCatching {{
             val fp = Fingerprint(
                 returnType = "Z",
@@ -238,8 +244,9 @@ class NexAlloyImporter:
             PatcherLog.info {{ "{var_name} hook skipped: $it" }}
         }}
 """
+                # Void return / class loading
                 elif "return-void" in src:
-                    cls_match = re.search(r'definingClass\s*=\s*"([^"]+)"', src)
+                    cls_match = re.search(r'definingClass\s*=\s*\"([^\"]+)\"', src)
                     cls_desc = cls_match.group(1).removeprefix("L").removesuffix(";").replace("/", ".") if cls_match else ""
                     if cls_desc:
                         body_code += f"""        runCatching {{
@@ -261,6 +268,7 @@ class NexAlloyImporter:
         }}
 """
                 else:
+                    # Fallback stub – always safe
                     body_code += f"""        runCatching {{
             PatcherLog.info {{ "{var_name} active at runtime" }}
         }}.onFailure {{
@@ -277,7 +285,7 @@ class NexAlloyImporter:
             patch_declarations.append(patch_code)
 
         array_items = ",\n    ".join(patch_vars)
-        kt_source = f"""package io.github.nexalloy.nxb_extended.{app_key.lower()}
+        kt_source = f"""package io.github.nexalloy.{app_key.lower()}
 
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement.returnConstant
