@@ -1,0 +1,5 @@
+NxbExtended NOTICE
+
+This bundle contains native Xposed hooks ported from community Morphe/ReVanced patch projects.
+Each source is licensed under its respective open-source license (primarily GPL-3.0).
+The ports are re-implemented against the NexAlloy runtime patcher API.

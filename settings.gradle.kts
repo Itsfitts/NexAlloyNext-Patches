@@ -37,3 +37,5 @@ rootProject.name = "NexAlloyNext-Patches"
 
 include(":stub")
 include(":bundles:nexfusion")
+
+include(":bundles:nxb_extended")

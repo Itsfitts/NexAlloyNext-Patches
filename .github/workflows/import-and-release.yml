@@ -42,12 +42,12 @@ jobs:
               with:
                   python-version: '3.11'
 
-            - name: Import upstream patch source
+            - name: Import upstream patch source via NexAlloy patch importer
               env:
                   SOURCE_URL: ${{ inputs.source_url }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  python scripts/import_patch_source.py --url "$SOURCE_URL"
+                  uv run .agents/skills/nexalloy-patch-importer/scripts/nexalloy_importer.py pipeline --url "$SOURCE_URL"
 
             - name: Commit imported patches to branch
               if: ${{ inputs.push_to_branch }}
