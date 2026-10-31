@@ -1,4 +1,4 @@
-package io.github.nexalloy.nexfusion
+﻿package io.github.nexalloy.nexfusion
 
 import io.github.nexalloy.AppPatchInfo
 import io.github.nexalloy.AppTarget
@@ -10,18 +10,44 @@ import io.github.nexalloy.patches.ExtensionContextHook
 import io.github.nexalloy.patches.MorpheTargets
 import io.github.nexalloy.revanced.googlephotos.GooglePhotosPatches
 import io.github.nexalloy.nexfusion.discord.DiscordPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.facebook.FacebookPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.gboard.GboardPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.gmail.GmailPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.google.GoogleDiscoverPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.instagram.InstagramPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.linkedin.LinkedInPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.mixplorer.MixplorerPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.protonvpn.ProtonVpnPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.reddit.RedditPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.spotify.SpotifyPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.telegram.TelegramPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 import io.github.nexalloy.nexfusion.twitter.TwitterPatches
+import io.github.nexalloy.nexfusion.brave.BravePatches
+
 
 /** Entry point of the NexFusion Patches bundle, named in its manifest. */
 object NexFusionPatches : PatchBundle {
@@ -194,5 +220,15 @@ object NexFusionPatches : PatchBundle {
             ),
             appIconColor = 0x2AABEE,
         ),
+        AppPatchInfo(
+            appName = "Brave Browser",
+            packageName = "com.brave.browser",
+            patches = BravePatches,
+            targets = listOf(
+                AppTarget("1.98.60"),
+            ),
+            appIconColor = 0xFF4500,
+        ),
     )
 }
+

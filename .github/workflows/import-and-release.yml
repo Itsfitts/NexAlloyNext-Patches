@@ -1,0 +1,167 @@
+name: Import Source & Build NXB
+
+on:
+    workflow_dispatch:
+        inputs:
+            source_url:
+                description: 'Patch source URL (e.g. https://morphe.software/add-source?github=kveld9/brave-patches)'
+                required: true
+                type: string
+                default: 'https://morphe.software/add-source?github=kveld9/brave-patches'
+            release_tag:
+                description: 'Release tag (e.g. 3.5.9-brave.1, or leave blank to auto-generate)'
+                required: false
+                type: string
+            push_to_branch:
+                description: 'Commit and push imported patch files back to this branch'
+                required: false
+                type: boolean
+                default: true
+
+permissions:
+    contents: write
+
+concurrency:
+    group: import-release
+    cancel-in-progress: false
+
+jobs:
+    import-build-and-release:
+        name: Import, Assemble & Release NXB
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+              with:
+                  submodules: recursive
+                  fetch-depth: 0
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.11'
+
+            - name: Import upstream patch source
+              env:
+                  SOURCE_URL: ${{ inputs.source_url }}
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  python scripts/import_patch_source.py --url "$SOURCE_URL"
+
+            - name: Commit imported patches to branch
+              if: ${{ inputs.push_to_branch }}
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git status
+                  if [[ -n "$(git status --porcelain)" ]]; then
+                    git add bundles/ scripts/
+                    git commit -m "feat: import patches from ${{ inputs.source_url }}"
+                    git push origin "${{ github.ref_name }}"
+                  else
+                    echo "No changes to commit."
+                  fi
+
+            - name: Set up Java
+              uses: actions/setup-java@v5
+              with:
+                  distribution: temurin
+                  java-version: '21'
+                  cache: gradle
+
+            - name: Set up Android SDK
+              uses: android-actions/setup-android@v4
+              with:
+                  packages: 'platforms;android-37.0 build-tools;37.0.0 platform-tools'
+
+            - name: Build bundles
+              run: ./gradlew assembleBundle --stacktrace
+
+            - name: Collect and verify generated .nxb bundles
+              id: verify
+              shell: bash
+              run: |
+                  shopt -s nullglob
+                  files=(bundles/*/build/outputs/bundle/*.nxb)
+
+                  if (( ${#files[@]} == 0 )); then
+                    echo "::error::Build completed but no .nxb files were found."
+                    find bundles -type f -path '*/build/outputs/*' -print
+                    exit 1
+                  fi
+
+                  mkdir -p release-assets
+                  for file in "${files[@]}"; do
+                    if [[ ! -s "$file" ]]; then
+                      echo "::error::Bundle is empty: $file"
+                      exit 1
+                    fi
+                    cp "$file" release-assets/
+                    echo "Verified: $file ($(stat -c%s "$file") bytes)"
+                  done
+
+                  echo "Generated ${#files[@]} bundle(s):"
+                  ls -lh release-assets/
+
+            - name: Determine release tag
+              id: release_info
+              shell: bash
+              env:
+                  INPUT_TAG: ${{ inputs.release_tag }}
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  bundle_version="$(sed -nE 's/.*versionName = "([^"]+)".*/\1/p' bundles/nexfusion/build.gradle.kts | head -n1)"
+                  if [[ -z "$bundle_version" ]]; then
+                    bundle_version="1.0.0"
+                  fi
+
+                  if [[ -n "$INPUT_TAG" ]]; then
+                    tag="$INPUT_TAG"
+                  else
+                    tag="${bundle_version}-import.${{ github.run_number }}"
+                  fi
+
+                  # Ensure tag doesn't collide with existing release
+                  if gh release view "$tag" >/dev/null 2>&1; then
+                    tag="${tag}-$(date +%s)"
+                  fi
+
+                  echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+            - name: Publish GitHub Release
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  TAG: ${{ steps.release_info.outputs.tag }}
+                  SOURCE_URL: ${{ inputs.source_url }}
+              shell: bash
+              run: |
+                  shopt -s nullglob
+                  assets=(release-assets/*.nxb)
+
+                  if (( ${#assets[@]} == 0 )); then
+                    echo "::error::No verified NXB assets available to publish."
+                    exit 1
+                  fi
+
+                  cat <<EOF > release-notes.md
+                  # NexAlloyNext Bundle Release ($TAG)
+
+                  Automated build including patches imported from:
+                  - **Source:** \`$SOURCE_URL\`
+
+                  ### Included Bundles
+                  $(for a in "${assets[@]}"; do echo "- \`$(basename "$a")\` ($(stat -c%s "$a") bytes)"; done)
+
+                  ### How to Use
+                  1. Download the \`.nxb\` bundle below.
+                  2. Open the **NexAlloyNext Manager** app on your Android device.
+                  3. Select **Import Bundle** and pick the downloaded \`.nxb\` file.
+                  4. Enable the target app in your Xposed/LSPosed scope and toggle your desired patches.
+                  EOF
+
+                  gh release create "$TAG" \
+                    "${assets[@]}" \
+                    --prerelease \
+                    --title "Release $TAG (Imported Source)" \
+                    --notes-file release-notes.md

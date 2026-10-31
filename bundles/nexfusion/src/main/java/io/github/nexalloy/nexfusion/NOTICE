@@ -221,3 +221,11 @@ and bundles/nexfusion/src/main/java/io/github/nexalloy/nexfusion/spotify/Fingerp
 ================================================================================
 
 
+
+================================================================================
+kveld9/kveld-morphe-patches
+https://github.com/kveld9/kveld-morphe-patches
+License: GPL-3.0
+Ported material: Brave Browser (com.brave.browser) - Stop background sync, suppress promos, block telemetry, clean start page, keep tabs open, and silence promo notifications.
+Installed as native Xposed runtime hooks against the NexAlloy patcher API.
+================================================================================
