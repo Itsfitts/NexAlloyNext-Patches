@@ -6,7 +6,7 @@
     <a href="https://github.com/a092devs/NexAlloyNext-Patches/releases"><img src="https://img.shields.io/github/v/release/a092devs/NexAlloyNext-Patches?style=flat-square&color=0284C7&label=Release" alt="Latest Release" /></a>
     <img src="https://img.shields.io/badge/Format-.nxb%20(Signed%20APK)-6366F1?style=flat-square" alt="Format: .nxb" />
     <img src="https://img.shields.io/badge/LSPosed-API%20101-blue?style=flat-square" alt="LSPosed API 101" />
-    <img src="https://img.shields.io/badge/Targets-17%20Applications-10B981?style=flat-square" alt="Targets: 17 Applications" />
+    <img src="https://img.shields.io/badge/Targets-18%20Applications-10B981?style=flat-square" alt="Targets: 18 Applications" />
     <img src="https://img.shields.io/badge/Icon-Hardware%20Silicon%20Matrix-0284C7?style=flat-square" alt="Hardware Silicon Matrix" />
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-orange?style=flat-square" alt="GPL-3.0" /></a>
   </p>
@@ -62,8 +62,8 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 | `nexalloy.bundle.apiVersion` | Integer | Patcher API version the bundle was compiled against (e.g. `1`) |
 | `nexalloy.bundle.author` | String | Bundle author displayed in the NexAlloyNext manager |
 | `nexalloy.bundle.description` | `@string` | String resource describing the bundle's capabilities |
-| `nexalloy.bundle.compatibilitySeries` | String | Compatible manager compatibility series (e.g. `3.5`) |
-| `nexalloy.bundle.minManagerVersion` | String | Minimum required manager version (e.g. `3.5.0`) |
+| `nexalloy.bundle.compatibilitySeries` | String | Compatible manager compatibility series (e.g. `3.6`) |
+| `nexalloy.bundle.minManagerVersion` | String | Minimum required manager version (e.g. `3.6.0`) |
 | `nexalloy.bundle.maxManagerVersion` | String | Maximum supported manager version (or empty for forward compatibility) |
 
 ### Manifest Contract & Resource Isolation
@@ -87,7 +87,7 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 ### Curated Distributions
 
 - **`nexalloy`:** Streaming core patches for YouTube, YouTube Music, and Google Photos cloud storage spoofing.
-- **`nexfusion` (`NexFusion Patches`):** Unified community runtime distribution covering all **17 supported application targets** in a single `.nxb` package.
+- **`nexfusion` (`NexFusion Patches`):** Unified community runtime distribution covering all **18 supported application targets** in a single `.nxb` package.
 
 ---
 
@@ -158,8 +158,8 @@ NexAlloyNext discovers bundles through **patch sources**. A source can be config
 - **Direct Feed Source:** A JSON endpoint declaring bundle versions, download URLs, and metadata:
   ```json
   {
-    "version": "3.5.11",
-    "download_url": "https://github.com/a092devs/NexAlloyNext-Patches/releases/download/3.5.11/nexfusion-3.5.11.nxb",
+    "version": "3.6.0",
+    "download_url": "https://github.com/a092devs/NexAlloyNext-Patches/releases/download/3.6.0/nexfusion-3.6.0.nxb",
     "description": "Unified community runtime patch bundle"
   }
   ```

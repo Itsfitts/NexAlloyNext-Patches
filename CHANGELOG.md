@@ -7,6 +7,15 @@ falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 3.6.0
+
+- `NexFusion` 3.6.0:
+  * Universal Dynamic Patch Architecture:
+    - Transitioned all supported application targets to universal dynamic bytecode matching, aligning the entire patch catalog with the version-agnostic architecture of Google Photos, Gmail, Google Discover, and LinkedIn.
+    - Removed rigid target version restrictions across YouTube, YT Music, Crunchyroll, Discord, Facebook, Instagram, Gboard, Proton VPN, Reddit, X (Twitter), Telegram, and Telegram Web.
+    - Patches now hook dynamically at runtime across app updates without triggering version gating or false incompatibility warnings.
+    - Upgraded bundle compatibility series to `3.6` and minimum manager version to `3.6.0`.
+
 ## 3.5.11
 
 - `NexFusion` 3.5.11:

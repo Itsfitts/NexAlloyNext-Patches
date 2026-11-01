@@ -20,18 +20,11 @@ class ProtonVpnPatchesTest {
     }
 
     @Test
-    fun `NexFusion bundle declares proton vpn with device target version`() {
+    fun `NexFusion bundle declares proton vpn with universal dynamic architecture`() {
         val protonApp = NexFusionPatches.apps.firstOrNull { it.packageName == "ch.protonvpn.android" }
         assertNotNull(protonApp)
         assertEquals("Proton VPN", protonApp.appName)
         assertEquals(5, protonApp.patches.size)
-
-        val targetVersions = protonApp.targets.map { it.version }.toSet()
-        assertTrue(targetVersions.contains("5.20.98.0"), "Must support installed device version 5.20.98.0")
-        assertTrue(targetVersions.contains("5.20.74.0"))
-        assertTrue(targetVersions.contains("5.20.57.0"))
-        assertTrue(targetVersions.contains("5.20.39.0"))
-        assertTrue(targetVersions.contains("5.19.72.0"))
-        assertTrue(targetVersions.contains("5.19.43.0"))
+        assertTrue(protonApp.targets.isEmpty(), "Proton VPN uses universal dynamic hooks")
     }
 }

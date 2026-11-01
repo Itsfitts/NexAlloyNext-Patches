@@ -17,16 +17,12 @@ class CrunchyrollPatchesTest {
     }
 
     @Test
-    fun `NexFusion bundle declares crunchyroll with targets and icon color`() {
+    fun `NexFusion bundle declares crunchyroll with universal dynamic architecture`() {
         val crApp = NexFusionPatches.apps.firstOrNull { it.packageName == "com.crunchyroll.crunchyroid" }
         assertNotNull(crApp)
         assertEquals("Crunchyroll", crApp.appName)
         assertEquals(0xFF5C00, crApp.appIconColor)
         assertEquals(2, crApp.patches.size)
-
-        val targetVersions = crApp.targets.map { it.version }.toSet()
-        assertTrue(targetVersions.contains("3.126.0"), "Must support installed device version 3.126.0")
-        assertTrue(targetVersions.contains("3.117.0"), "Must support 3.117.0")
+        assertTrue(crApp.targets.isEmpty(), "Crunchyroll uses universal dynamic hooks")
     }
 }
-
