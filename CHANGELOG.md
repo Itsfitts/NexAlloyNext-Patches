@@ -7,6 +7,21 @@ falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 3.6.3
+
+- `NexFusion` 3.6.3:
+  * Universal Cross-Compatibility System:
+    - Removed rigid manager version locks, enabling cross-compatibility across all manager versions.
+    - Future bundle updates and downgrades can be directly installed without requiring manager updates.
+  * Instagram:
+    - Added `Turn off HDR brightness boosts` patch: clamps HDR headroom on SurfaceView/Window and neutralizes synthetic HDR tone mapping in software video decoders.
+  * Facebook:
+    - Added `Hide suggested groups` patch: suppresses Suggested for you group cards and recommendation units in feeds and the Groups tab.
+  * YouTube / YouTube Music:
+    - Synchronized core extensions: adjusted snackbar queue timeouts, added Watch Later button settings, fixed Explore shelf visibility, and improved Shorts hold-to-speed handling.
+  * Release Synchronization:
+    - Synchronized bundle release metadata with NexAlloyNext 3.6.3.
+
 ## 3.6.2
 
 - `NexFusion` 3.6.2:

@@ -802,10 +802,47 @@ val HideMetaAi = patch(
     }.onFailure { PatcherLog.info(it) { "NexFusion: Facebook inline comment summary plugin skipped" } }
 }
 
+val HideSuggestedGroups = patch(
+    name = "Hide suggested groups",
+    description = "Removes Suggested for you group cards and recommendation units from the Groups tab and feeds.",
+    use = false,
+) {
+    runCatching {
+        val edgeClass = classLoader.loadClass("com.facebook.graphql.model.GraphQLFeedUnitEdge")
+        val categoryClass = classLoader.loadClass("com.crossapp.graphql.facebook.enums.GraphQLFeedStoryCategory")
+        val categoryGetter = edgeClass.declaredMethods.singleOrNull {
+            it.parameterTypes.isEmpty() && it.returnType == categoryClass
+        } ?: throw NoSuchMethodException("GraphQLFeedUnitEdge -> GraphQLFeedStoryCategory")
+        categoryGetter.isAccessible = true
+
+        val suggestedCategories = setOf(
+            "GROUPS_YOU_SHOULD_JOIN",
+            "DISCOVER_GROUPS",
+            "SUGGESTED_GROUPS",
+            "GROUP_SUGGESTIONS",
+            "GROUP_RECOMMENDATIONS",
+            "GROUPS_DISCOVERY_CHAINING",
+        )
+
+        ::feedFunnel.hookMethod {
+            before { param ->
+                val edge = param.args.firstOrNull { edgeClass.isInstance(it) } ?: return@before
+                val categoryName = runCatching {
+                    categoryGetter.invoke(edge)?.toString()
+                }.getOrNull() ?: return@before
+                if (categoryName in suggestedCategories || categoryName.contains("GROUP_SUGGESTION")) {
+                    param.result = false
+                }
+            }
+        }
+    }.onFailure { PatcherLog.info(it) { "NexFusion Facebook: Hide suggested groups hook skipped" } }
+}
+
 val FacebookPatches = arrayOf(
     AllowScreenshots,
     BlockScreenshotDetection,
     HideSponsoredPosts,
+    HideSuggestedGroups,
     HideSponsoredStories,
     HideSponsoredReels,
     HideFeedReels,

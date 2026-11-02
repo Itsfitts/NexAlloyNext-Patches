@@ -6,10 +6,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.ViewTreeObserver
+import android.view.Window
 import android.view.WindowManager
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam
@@ -746,6 +748,52 @@ val HideMetaAi = patch(
     }.onFailure { PatcherLog.info(it) { "NexFusion Instagram: Hide Meta AI view hider skipped" } }
 }
 
+val TurnOffHdrBoosts = patch(
+    name = "Turn off HDR brightness boosts",
+    description = "Prevents HDR reels and videos from boosting display brightness beyond SDR levels, and disables AV1 synthetic HDR tone mapping.",
+    use = false,
+) {
+    if (Build.VERSION.SDK_INT >= 34) {
+        runCatching {
+            SurfaceView::class.java.declaredMethods.filter { it.name == "setDesiredHdrHeadroom" }.forEach { method ->
+                XposedBridge.hookMethod(method, object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        param.args[0] = 1.0f
+                    }
+                })
+            }
+        }
+    }
+    runCatching {
+        Window::class.java.declaredMethods.filter { it.name == "setColorMode" }.forEach { method ->
+            XposedBridge.hookMethod(method, object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    param.args[0] = 0
+                }
+            })
+        }
+    }
+    // AV1 synthetic HDR tone mapping hook (Dav1dMediaCodecAdapterSetting)
+    runCatching {
+        val dav1dClass = classLoader.loadClass("exoplayer2.av1.src.Dav1dMediaCodecAdapterSetting")
+        for (constructor in dav1dClass.declaredConstructors) {
+            XposedBridge.hookMethod(constructor, object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam) {
+                    val field = dav1dClass.declaredFields.firstOrNull { it.name == "enhancementMode" && it.type == Integer.TYPE }
+                    if (field != null) {
+                        field.isAccessible = true
+                        val mode = field.getInt(param.thisObject)
+                        if (mode in 12..14) {
+                            field.setInt(param.thisObject, 0)
+                        }
+                    }
+                }
+            })
+        }
+    }
+    PatcherLog.info { "NexFusion Instagram: Turn off HDR brightness boosts installed" }
+}
+
 val InstagramPatches = arrayOf(
     HideAds,
     HideSuggestedPosts,
@@ -757,6 +805,7 @@ val InstagramPatches = arrayOf(
     HideStoryFollow,
     HideFeedFollow,
     TurnOffDoubleTapLike,
+    TurnOffHdrBoosts,
     AllowScreenshots,
     BlockScreenshotDetection,
     SanitizeShareLinks,
