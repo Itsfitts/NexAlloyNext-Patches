@@ -7,6 +7,26 @@ falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 3.6.1
+
+- `NexFusion` 3.6.1:
+  * Google Maps Support (`com.google.android.apps.maps`):
+    - Added `Hide ads` patch: suppresses promoted map pins, sponsored search result rows, navigation ad labels, and ad impression beacons.
+    - Added `High refresh rate` patch: unhooks artificial 60 Hz window caps on WindowManager layout parameters and unlocks 90 Hz / 120 Hz display refresh rates and map rendering.
+    - Added `Disable telemetry` patch: blocks Clearcut logging, Firebase analytics, Play services compliance check-ins, and performance monitoring transmitters.
+    - Added `Hide clutter & AI summaries` patch: disables Ask Maps in navigation and search, and suppresses AI place summaries and promotional prompts.
+    - Added `AMOLED black theme` patch: provides pure AMOLED black background styling for dark mode interface elements.
+  * Kick Support (`com.kick.mobile`):
+    - Added comprehensive patch suite including telemetry suppression, background audio playback, live/VOD ad bypass, custom third-party emote integration, and AMOLED black theme.
+  * Twitch Support (`tv.twitch.android.app`):
+    - Added client and display ad blocking, 7TV/BTTV/FFZ third-party chat emotes, background audio playback, telemetry suppression, and AMOLED black theme.
+  * Gboard Keyboard Auto-Collapse Fix:
+    - Resolved keyboard auto-collapse when sending messages in WhatsApp and other messaging applications by decoupling dictation cancellation from input finish views.
+  * X (Twitter) Ad Filtering Hardening:
+    - Added JSON timeline entry and module item layer ad filtering for robust sponsored content suppression across 12.39+ builds.
+  * Decommissioned MiXplorer from default bundles and catalog.
+  * Upgraded minimum manager version requirement to `3.6.1`.
+
 ## 3.6.0
 
 - `NexFusion` 3.6.0:
