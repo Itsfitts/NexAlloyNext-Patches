@@ -157,7 +157,7 @@ jobs:
                     {
                       echo ""
                       echo "### Compatibility"
-                      echo "- **NexAlloyNext Series:** \`$compat_series\` (minimum manager version: \`$min_mgr\`)"
+                      echo "- **NexFusion Series:** \`$compat_series\` (minimum manager version: \`$min_mgr\`)"
                       echo "<!-- compat-series: $compat_series -->"
                       echo "<!-- min-manager: $min_mgr -->"
                     } >> release-notes.md

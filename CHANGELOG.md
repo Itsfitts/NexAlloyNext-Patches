@@ -1,13 +1,42 @@
 # Changelog
 
-All notable changes to the NexAlloyNext patch bundles are documented here. Releases are dispatched
+All notable changes to the NexFusion patch bundles are documented here. Releases are dispatched
 automatically on every push to `main` for the version of the first `X.Y.Z` section below when that
 version has no release yet. The section matching the release tag becomes the release notes,
 falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 4.0.0
+
+- `NexFusion` 4.0.0:
+  * Inaugural Nexfusion-Patches Rebranding & Package Migration:
+    - Renamed bundle architecture to Nexfusion-Patches across all patch definitions, extension bindings, and build configurations.
+    - Fully migrated package namespaces, extension loaders, and bytecode references to `io.github.nexfusion.*`.
+  * Reddit Quality of Life:
+    - Transparent Navigation Bar: Enforced fully transparent system navigation bar across all Reddit screens by hooking Reddit's EdgeToEdge setup, activity window focus changes, and platform Window APIs with contrast enforcement disabled.
+    - Colorize Comment Indent Lines: Added color-coded indentation guidelines per nesting depth, cycling through 8 distinct theme hues with full opacity in Jetpack Compose drawScope.
+  * Facebook Media Downloader Hardening:
+    - Fixed an issue where the download patch failed to apply due to strict multi-hook assertions and rigid menu filler signatures.
+    - Added resilient multi-anchor fingerprint resolution for post overflow menus, VideoPlayerParams constructors, and can_viewer_download gates.
+    - Wrapped individual capability initializers in isolated error boundaries, ensuring download features apply reliably across Facebook 581 through 585+.
+  * Instagram Interaction Safeguards:
+    - Expanded "Turn off double tap to like" patch to cover both Feed (`onDoubleTapMedia`) and Reels (`ClipsItemGestureDetector_onDoubleTap`) gesture listeners.
+    - Defaulted patch to enabled to reliably prevent accidental likes while scrolling feeds and viewing reels.
+  * YouTube Settings & About Section:
+    - Updated About section inside Morphe settings to display NexFusion, release version 4.0.0, and official NexFusion repository links.
+    - Preserved Morphe settings menus, preferences hierarchy, and headers intact.
+  * Issue Template Refinement & Housekeeping:
+    - Rectified duplicated bundle examples and updated version references to 4.0.0.
+    - Cleaned up issue templates, grammar, and navigation instructions across repositories.
+  * Universal Compatibility & Integration:
+    - Full bidirectional compatibility with the NexFusion manager ecosystem.
+    - Preserved all runtime patch features, dynamic hook registries, and resource injection tables across 20 supported applications.
+  * Zero-Trace Architecture & Optimization:
+    - Cleaned up build artifacts, legacy tracking branches, and outdated namespace bindings.
+
 ## 3.6.3
+
 
 - `NexFusion` 3.6.3:
   * Universal Cross-Compatibility System:
@@ -20,7 +49,7 @@ bundles after CI succeeds.
   * YouTube / YouTube Music:
     - Synchronized core extensions: adjusted snackbar queue timeouts, added Watch Later button settings, fixed Explore shelf visibility, and improved Shorts hold-to-speed handling.
   * Release Synchronization:
-    - Synchronized bundle release metadata with NexAlloyNext 3.6.3.
+    - Synchronized bundle release metadata with NexFusion 3.6.3.
 
 ## 3.6.2
 
@@ -196,7 +225,7 @@ bundles after CI succeeds.
   * Promoted Item Probes: Added promoted post (`l1.e`), promoted RTB (`r1.j`), and item variant (`f2.h`) probes alongside legacy models.
   * Video Downloads: Added Premium check hooks for `com.x.subscriptions.r`, `isDownloadable` overrides for video models `v4.j`, `p4.g`, `s4.g`, and updated video tab download handler.
   * Update Blocker: Added in-app update prompt blocker for `com.x.android.appupdate.l.a`. 
-  * Bundle Compatibility: Updated compatibility series and minManagerVersion to 3.5 to align with NexAlloyNext 3.5.0 manager.
+  * Bundle Compatibility: Updated compatibility series and minManagerVersion to 3.5 to align with NexFusion 3.5.0 manager.
   * Gboard Screenshot Chips: Enabled `enable_screenshot_in_clipboard`, `enable_auto_paste_chips`, and `writing_tools_v2_enable_screenshot_context` with forced overrides so recent screenshots reliably show in the suggestion strip.
   * Gboard Suggestion Strip & Preferences: SharedPreferences hook now preserves existing user preferences instead of overwriting them on startup, preventing preference resets on force-stop. Proactive suggestion strip close button disabled by default to keep the suggestion row persistently accessible.
 
@@ -284,26 +313,26 @@ bundles after CI succeeds.
 ## 3.4.4
 
 - `NexFusion` 3.4.4:
-  * Unified Patch Bundle: Merged YouTube, YouTube Music, and Google Photos directly into NexFusion, retiring the separate `bundles/nexalloy` bundle to consolidate all 15 supported applications into a single, unified patch bundle (`nexfusion-3.4.4.nxb`).
+  * Unified Patch Bundle: Merged YouTube, YouTube Music, and Google Photos directly into NexFusion, retiring the separate `bundles/nexfusion` bundle to consolidate all 15 supported applications into a single, unified patch bundle (`nexfusion-3.4.4.nxb`).
   * Classic YouTube Navigation: Fully restored the classic 5 bottom tabs layout (`Home`, `Shorts`, `+`, `Subscriptions`, `You`) and phone header chips ("All", "Podcasts", "Gaming", etc.) by purging Automotive Guide spoofing from `NavigationBarPatch`.
   * YouTube SponsorBlock: Restored `PlayerTypeFingerprint` and `ReelWatchPagerFingerprint` in `PlayerTypeHookPatch`, ensuring player types are tracked in real-time, `playerState().isPlayerTypeNoneOrHidden()` evaluates accurately, and automated segment skipping operates seamlessly.
-  * YouTube Settings & About Screen: Updated branding to "NexAlloyNext", updated repository link to `https://github.com/a092devs/NexAlloyNext`, developer attribution to `@a092devs`, and Telegram to `https://t.me/a092devs`. Removed Discord, Donate, and Morphe API fetch buttons.
+  * YouTube Settings & About Screen: Updated branding to "NexFusion", updated repository link to `https://github.com/a092devs/NexFusion`, developer attribution to `@a092devs`, and Telegram to `https://t.me/a092devs`. Removed Discord, Donate, and Morphe API fetch buttons.
   * Verified App Targets: YouTube `21.42.243`, `21.41.525`, `21.40.161`, `21.39.522`; YouTube Music `9.33.00`; Instagram `452.1.0.53.64`; LinkedIn `4.1.1264`; Facebook `583.0.0.39.55`; Discord `350.8`; Proton VPN `5.20.98.0`; X `12.36.1-prod.01`; Reddit `2026.42.0`. All unit and compatibility tests pass.
 
 ## 3.4.3
 
-- `NexAlloy` 1.0.15:
+- `NexFusion` 1.0.15:
   * YouTube Client Identity & Layout: Completely eliminated internal `isAutomotive` context overrides and InnerTube `osName: "Android Automotive"` endpoint spoofing from `HideAdsPatch` and `AdsFilter`. YouTube operates strictly as a standard Android phone client, fully restoring the native portrait video player, classic 5-tab bottom navigation (`Home`, `Shorts`, `+`, `Subscriptions`, `You`), and eliminating tablet/dashboard split mode.
   * YouTube Watch History: Fully restored user Watch History shelf (`library_recent_shelf` / `FEhistory`) on the "You" tab and continuous playback tracking by serving standard Android InnerTube browse and player payloads.
-  * Preferences Defaults Migration: Added one-time migration (`nexalloy_defaults_migrated_v4`) in `Settings.java` resetting stale stored preferences on existing installs (`swap_create_with_notifications` -> false, `hide_horizontal_shelves` -> false, `hide_get_premium` -> true, `hide_youtube_premium_menu` -> true, `hide_shorts` -> false, `hide_subscriptions` -> false, `hide_create` -> false).
+  * Preferences Defaults Migration: Added one-time migration (`nexfusion_defaults_migrated_v4`) in `Settings.java` resetting stale stored preferences on existing installs (`swap_create_with_notifications` -> false, `hide_horizontal_shelves` -> false, `hide_get_premium` -> true, `hide_youtube_premium_menu` -> true, `hide_shorts` -> false, `hide_subscriptions` -> false, `hide_create` -> false).
   * SponsorBlock Controls: Re-enabled standard controls overlay bindings (`size_adjustable_youtube_controls_overlay`), allowing SponsorBlock skip buttons, segment markers, and automated skip logic to seamlessly render on the phone player layout.
-  * Settings Branding & Links: Updated Morphe About dialog branding to "NexAlloyNext", updated links to developer GitHub repository (`https://github.com/a092devs/NexAlloyNext`), developer profile (`https://github.com/a092devs`), and Telegram (`https://t.me/a092devs`), and removed legacy third-party donation links.
+  * Settings Branding & Links: Updated Morphe About dialog branding to "NexFusion", updated links to developer GitHub repository (`https://github.com/a092devs/NexFusion`), developer profile (`https://github.com/a092devs`), and Telegram (`https://t.me/a092devs`), and removed legacy third-party donation links.
 - `NexFusion` 3.4.3:
   * Developer Attribution: Cleaned legacy developer references across Spotify and media session modules, aligning attribution with `a092devs`.
 
 ## 3.4.2
 
-- `NexAlloy` 1.0.14:
+- `NexFusion` 1.0.14:
   * YouTube Layout & Navigation: Restored classic 5 bottom tabs layout (Home, Shorts, Subscriptions, Create/Notifications, You) by defaulting `morphe_swap_create_with_notifications_button` to `false`, preventing unintended Android Automotive Guide client spoofing.
   * YouTube Premium Promos: Defaulted `morphe_hide_get_premium_button` and `morphe_hide_youtube_premium_menu` to `true`, cleanly hiding "Get Premium" promotions from the You tab page header (`SPunlimited`) and navigation menus.
   * YouTube Watch History: Restored Watch History shelf on the "You" tab by setting `morphe_hide_horizontal_shelves` default to `false` and preserving `FEhistory` shelf visibility.
@@ -315,7 +344,7 @@ bundles after CI succeeds.
 
 ## 3.4.1
 
-- `NexAlloy` 1.0.13:
+- `NexFusion` 1.0.13:
   * YouTube SponsorBlock: Resolved critical playback time tracking failure on YouTube 21.42+. Fixed `PlayerControllerSetTimeReferenceFingerprint` opcode filter mismatch to accurately bind the `arcb.<init>` constructor hook, restoring real-time playback position ticks to `videoTimeHooks` and re-enabling automated SponsorBlock segment skipping.
 - `NexFusion` 3.4.1:
   * Instagram: Verified compatibility with `com.instagram.android` 452.1.0.53.64 (reels, stories, media download hooks pass with zero errors).
@@ -327,12 +356,12 @@ bundles after CI succeeds.
 - `NexFusion` 3.4.0:
   * Settings UI: Fixed `sortPreferenceGroups` NullPointerException when encountering null-key preference groups or null items, adding full null-safety with collation fallback and automated regression tests.
   * Patch Set Curation: Completely removed discontinued patches (`Kleinanzeigen`, `Untappd`, and `InterPals`) along with their exclusive resources, tests, and build definitions.
-  * NexFusion Modernization: Relocated remaining `2eno` extension packages (googleads, shared, spotify) to `io.github.nexalloy.nexfusion.extension`, unified runtime logger tag to NexFusion, and preserved upstream attribution.
+  * NexFusion Modernization: Relocated remaining `2eno` extension packages (googleads, shared, spotify) to `io.github.nexfusion.nexfusion.extension`, unified runtime logger tag to NexFusion, and preserved upstream attribution.
   * Reddit: Added `RedgifsAudioPatch` for unmuting embedded Redgifs audio streams on Reddit 2026.42.0+.
   * Upstream Feature Ports: Integrated Picture-in-Picture captions toggle, Skip Live Shorts filter, Ambient Mode override controls, and Video Delay adjustments.
   * Build & CI: Submodule pointers and public fork references updated to ensure fully reproducible, verified CI builds.
 - Build: Removed the duplicated local `build-logic` copy and pinned the
-  `nexalloy.bundle` plugin to the version published by NexAlloyNext.
+  `nexfusion.bundle` plugin to the version published by NexFusion.
 - CI: Kept validation in the Android workflow and restored a dedicated release
   workflow for reproducible release builds and publishing.
 - Security: Added repository secret scanning and documented handling for
@@ -348,12 +377,12 @@ bundles after CI succeeds.
 
 ## 3.3.9
 
-- `NexAlloy` 1.0.12:
+- `NexFusion` 1.0.12:
   * YouTube: Added `is_21.38_or_greater` and `is_21.40_or_greater` version flags for YouTube 21.38+ and 21.40+ compatibility.
   * YouTube: Added `readsResourcesWithParser` support to `ElementProtoParserHookPatch` for YouTube 21.40+ inline resource handling (template/JS module bytes).
   * YouTube: Made `timeMethod` hook optional in `VideoInformationPatch` so the patch still applies even when the fingerprint doesn't match on YouTube 21.42+, preventing cascade failures to SponsorBlock and other dependent patches.
   * YouTube: Added `name` parameters to all YouTube dependency patches (`PlayerResponseMethodHook`, `VideoId`, `VideoInformationPatch`, `PlayerTypeHook`, `LegacyPlayerControls`, `PlayerControlsOverlayVisibility`, `conversionContextPatch`, `textComponentPatch`) for clearer patch status reporting.
-- `NexAlloy` 1.0.11:
+- `NexFusion` 1.0.11:
   * YouTube: Fixed `FixVerticalScrollPatch` fingerprint for YouTube 21.42+ by resolving direct `canScrollVertically` call on obfuscated `SwipeRefreshLayout` and adding resilient catch handler to prevent cascading `LithoFilter` hook initialization failure.
   * YouTube: Updated `experimentFlagUtilFingerprint` and flag accessor fingerprints for YouTube 21.42+ three-parameter method shape (`listOf("I", "J", ...)`).
   * YouTube: Added 21.42+ compatibility check in `VersionCheckPatch`.
@@ -376,7 +405,7 @@ bundles after CI succeeds.
   * Reddit: Consolidated Reddit into NexFusion. Added "Hide Reddit ads", "Sanitize Reddit sharing links" and "Start Reddit as guest" alongside existing Reddit patches, removing dual-bundle duplication.
   * Instagram: Added support for Instagram 452.0.0.48.64 and verified sheet-menu anchors. Added DASH manifest test suite.
   * Discord: Added support for Discord 349.9; all 135 privacy targets resolve against the installed APK.
-- `NexAlloy` 1.0.10:
+- `NexFusion` 1.0.10:
   * Reddit: Removed from this bundle; all Reddit patches now live exclusively in NexFusion.
 
 ## 3.3.3
@@ -395,7 +424,7 @@ bundles after CI succeeds.
 ## 3.3.1
 
 - `NexFusion` 3.3.1:
-  * Spotify: Added "Unlock Spotify Premium" patch, ported from `yobreehs/yfimeF`/Femify: account attribute overrides unlock on-demand playback, unforced shuffle, unlimited skips and the Premium settings UI, and restore the popular tracks on artist pages. Every hook installs independently, so a moved anchor on a new Spotify version only disables that block. Ships disabled because Spotify restricts accounts that use modified clients (issue #3); enable it in NexAlloy explicitly.
+  * Spotify: Added "Unlock Spotify Premium" patch, ported from `yobreehs/yfimeF`/Femify: account attribute overrides unlock on-demand playback, unforced shuffle, unlimited skips and the Premium settings UI, and restore the popular tracks on artist pages. Every hook installs independently, so a moved anchor on a new Spotify version only disables that block. Ships disabled because Spotify restricts accounts that use modified clients (issue #3); enable it in NexFusion explicitly.
   * Spotify: "Hide ad sections" now also removes the embedded brand-ad card from the now playing view feed.
   * Spotify: Added fingerprints for the product state, artist query parameters, Google Assistant context and now playing feed, validated against Spotify 9.1.90.2270 and 9.1.92.3058.
   * NOTICE: Added attribution for the ReVanced/Femify premium material.
@@ -403,8 +432,8 @@ bundles after CI succeeds.
 ## 3.3.0
 
 - `NexFusion` 3.3.0:
-  * Gmail: Added "Hide ads" patch to remove sponsored conversation rows between emails in Promotions and Social tabs (ported from `MrxSiN/GmailHideAds` and `gnadgnaoh/NexAlloy-XES`).
-  * Google App: Added "Filter Discover ads" patch to filter promoted ad cards from the Google Discover feed (ported from `hxreborn/discover-ads-filter` and `gnadgnaoh/NexAlloy-XES`).
+  * Gmail: Added "Hide ads" patch to remove sponsored conversation rows between emails in Promotions and Social tabs (ported from `MrxSiN/GmailHideAds` and `gnadgnaoh/NexFusion-XES`).
+  * Google App: Added "Filter Discover ads" patch to filter promoted ad cards from the Google Discover feed (ported from `hxreborn/discover-ads-filter` and `gnadgnaoh/NexFusion-XES`).
   * NOTICE: Added full attribution and license credits for ported material.
 
 ## 3.2.9
@@ -425,7 +454,7 @@ bundles after CI succeeds.
 
 ## 3.2.6
 
-- `NexAlloy` & `NexFusion` 3.2.6:
+- `NexFusion` & `NexFusion` 3.2.6:
   * YouTube: Ported latest fixes and updates from Morphe `dev` branch:
     - **Miniplayer**: Watch transition animation fix (prevents feed from jumping or rendering black when expanding/collapsing player) and "Play next/last in queue" from feeds fix.
     - **Video Quality**: Added initial video quality and SABR stream constraint overrides to prevent video quality from dropping during playback.
@@ -480,8 +509,8 @@ bundles after CI succeeds.
 ## 3.2.0
 
 - `NexFusion` 3.2.0:
-  * Renamed the custom `a092devs` bundle to `NexFusion Patches` (`nexfusion.nxb`, `io.github.nexalloy.patches.nexfusion`).
-  * Initiated coordinated versioning series `3.2` matching NexAlloyNext manager `3.2.0`.
+  * Renamed the custom `a092devs` bundle to `NexFusion Patches` (`nexfusion.nxb`, `io.github.nexfusion.patches`).
+  * Initiated coordinated versioning series `3.2` matching NexFusion manager `3.2.0`.
   * Added compatibility series (`3.2`) and minimum manager version (`3.2.0`) metadata for semantic compatibility validation in the manager app.
   * Preserved full support for all existing patch collections and ported features:
     - Instagram (`com.instagram.android` 451.0.0.53.80, 450.0.0.46.79, 447.0.0.55.81): ad & suggestion blocking, ad injector guard, in-app download dialog with custom folders, per-username subfolders, timestamp filenames, DASH audio extraction, ghost story/live viewing, story auto-advance hold, typing status suppression, double-tap like suppression.
@@ -496,7 +525,7 @@ bundles after CI succeeds.
 
 - `a092devs` 1.8.2:
   * Instagram (`com.instagram.android` 451.0.0.53.80): added custom download folder configuration,
-    allowing users to set any custom base folder path (or reset to `NexAlloyNext/Instagram`).
+    allowing users to set any custom base folder path (or reset to `NexFusion/Instagram`).
   * Instagram: redesigned the Download Settings dialog into a smooth, in-place update interface,
     eliminating the flickering dismiss-and-reopen behavior on option toggles.
   * Instagram: added new patches ported from HushGram:
@@ -510,8 +539,8 @@ bundles after CI succeeds.
 - `a092devs` 1.8.1:
   * Instagram (`com.instagram.android` 451.0.0.53.80): added "Download audio" option to the download
     dialog for reels and videos, saving the audio track as an `.m4a` file directly into
-    `Download/NexAlloyNext/Instagram` using DASH manifest stream extraction with native media muxer fallback.
-  * Instagram: default download folder path under Downloads is now `Download/NexAlloyNext/Instagram`
+    `Download/NexFusion/Instagram` using DASH manifest stream extraction with native media muxer fallback.
+  * Instagram: default download folder path under Downloads is now `Download/NexFusion/Instagram`
     on device storage (with optional poster subfolder when per-username folders are enabled).
 
 ## 2.11.0
@@ -547,7 +576,7 @@ bundles after CI succeeds.
   match the maintained X builds, and its Instagram side had already moved to `a092devs` in 2.6.0.
   X coverage is superseded by the kveld9 port in `a092devs` 1.7.0 (`12.35.0-prod.01`). The Piko
   NOTICE is retained verbatim as
-  `bundles/a092devs/src/main/java/io/github/nexalloy/a092devs/NOTICE-piko` (the `a092devs` NOTICE
+  `bundles/a092devs/src/main/java/io/github/nexfusion/a092devs/NOTICE-piko` (the `a092devs` NOTICE
   now points there), so the upstream attribution requirement survives the removal.
 - Docs updated for the removal: the README bundle list, the DEVELOPMENT module tree and the
   installed-app audit now credit `a092devs` for Instagram and X instead of the removed bundle.
@@ -613,7 +642,7 @@ bundles after CI succeeds.
 
 ## 2.4.0
 
-- `nexalloy` 1.0.7: ported four runtime player and layout patches from Morphe/yollAmeF:
+- `nexfusion` 1.0.7: ported four runtime player and layout patches from Morphe/yollAmeF:
   * Ambient Mode: options to bypass power-saving restrictions and disable Ambient mode dimming in fullscreen.
   * Miniplayer: modern miniplayer flag overrides, horizontal drag support, and offscreen repositioning hooks.
   * Picture-in-picture seek buttons: rewind and forward (±5s) controls injected directly into Android Picture-in-Picture window actions.
@@ -625,7 +654,7 @@ bundles after CI succeeds.
 
 ## 2.3.0
 
-- `nexalloy`: version-gated fingerprint updates for YouTube 21.41 (background playback settings,
+- `nexfusion`: version-gated fingerprint updates for YouTube 21.41 (background playback settings,
   player type target and the shorts-resume constructor split).
 - `a092devs`: Discord "Use your phone's font" option (ReactFontManager system-typeface hook ported
   from Venus Patches; off by default) and seven Reddit runtime ports from Adobo — screenshot-banner

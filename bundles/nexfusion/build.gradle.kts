@@ -6,24 +6,24 @@ import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import java.util.Properties
 
 plugins {
-    id("nexalloy.bundle")
+    id("nexfusion.bundle")
     alias(libs.plugins.protobuf)
 }
 
 android {
-    namespace = "io.github.nexalloy.patches.nexfusion"
+    namespace = "io.github.nexfusion.patches"
 
     lint {
         abortOnError = false
     }
 
     defaultConfig {
-        applicationId = "io.github.nexalloy.patches.nexfusion"
-        versionCode = 62
+        applicationId = "io.github.nexfusion.patches"
+        versionCode = 64
         val patchVersion = Properties().apply {
             rootProject.file("morphe-patches/gradle.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
         }["version"]
-        versionName = "3.6.3"
+        versionName = "4.0.0"
         buildConfigField("String", "PATCH_VERSION", "\"$patchVersion\"")
     }
     sourceSets {
@@ -48,8 +48,8 @@ android {
     }
 }
 
-nexalloyBundle {
-    entry = "io.github.nexalloy.nexfusion.NexFusionPatches"
+nexfusionBundle {
+    entry = "io.github.nexfusion.nexfusion.NexFusionPatches"
     author = "a092devs"
     descriptionResource = "bundle_description"
     resourcePackageId = 0x4e
@@ -70,7 +70,7 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 dependencies {
-    compileOnly(libs.nexalloy.patcher)
+    compileOnly(libs.nexfusion.patcher)
     compileOnly(project(":stub"))
     implementation(libs.annotation)
     implementation(libs.gson)
@@ -170,12 +170,12 @@ abstract class GenerateMorpheTargetsTask : DefaultTask() {
             }
             "    public static final List<AppTarget> $name = Arrays.asList(${targets.joinToString(", ")});"
         }
-        val dir = outputDirectory.get().asFile.resolve("io/github/nexalloy/patches").apply { mkdirs() }
+        val dir = outputDirectory.get().asFile.resolve("io/github/nexfusion/patches").apply { mkdirs() }
         dir.resolve("MorpheTargets.java").writeText(
             """
-            |package io.github.nexalloy.patches;
+            |package io.github.nexfusion.patches;
             |
-            |import io.github.nexalloy.AppTarget;
+            |import io.github.nexfusion.AppTarget;
             |import java.util.Arrays;
             |import java.util.List;
             |
@@ -359,7 +359,7 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-    testImplementation(libs.nexalloy.patcher)
+    testImplementation(libs.nexfusion.patcher)
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
     testImplementation(libs.junit.jupiter.params)

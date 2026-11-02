@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="assets/icon.png" width="128" height="128" alt="NexAlloyNext-Patches Logo" />
-  <h1>NexAlloyNext-Patches</h1>
-  <p><strong>Modular runtime bytecode patch bundles (.nxb) for NexAlloyNext and LSPosed.</strong></p>
+  <img src="assets/icon.png" width="128" height="128" alt="Nexfusion-Patches Logo" />
+  <h1>Nexfusion-Patches</h1>
+  <p><strong>Modular runtime bytecode patch bundles (.nxb) for NexFusion and LSPosed.</strong></p>
   <p>
-    <a href="https://github.com/a092devs/NexAlloyNext-Patches/releases"><img src="https://img.shields.io/github/v/release/a092devs/NexAlloyNext-Patches?style=flat-square&color=0284C7&label=Release" alt="Latest Release" /></a>
+    <a href="https://github.com/a092devs/Nexfusion-Patches/releases"><img src="https://img.shields.io/github/v/release/a092devs/Nexfusion-Patches?style=flat-square&color=0284C7&label=Release" alt="Latest Release" /></a>
     <img src="https://img.shields.io/badge/Format-.nxb%20(Signed%20APK)-6366F1?style=flat-square" alt="Format: .nxb" />
     <img src="https://img.shields.io/badge/LSPosed-API%20101-blue?style=flat-square" alt="LSPosed API 101" />
     <img src="https://img.shields.io/badge/Targets-19%20Applications-10B981?style=flat-square" alt="Targets: 19 Applications" />
@@ -23,9 +23,9 @@
 
 ## 📖 Overview
 
-**NexAlloyNext-Patches** provides modular runtime bytecode patches packaged into `.nxb` bundles for the [NexAlloyNext](https://github.com/a092devs/NexAlloyNext) root + LSPosed manager ecosystem.
+**Nexfusion-Patches** provides modular runtime bytecode patches packaged into `.nxb` bundles for the [NexFusion](https://github.com/a092devs/NexFusion) root + LSPosed manager ecosystem.
 
-Unlike traditional patching tools that decompile, modify, re-sign, and reinstall target APKs, **NexAlloy patches execute entirely in-memory at process startup**:
+Unlike traditional patching tools that decompile, modify, re-sign, and reinstall target APKs, **NexFusion patches execute entirely in-memory at process startup**:
 
 - 🔒 **Zero APK Tampering:** Target applications remain official, unaltered on disk, and preserve their authentic Play Store signatures and Play Protect integrity.
 - ⚡ **Dynamic DexKit Interception:** Obfuscated classes, methods, and fields are resolved at process startup via bytecode pattern analysis and string fingerprinting.
@@ -48,35 +48,35 @@ Patches locate target bytecode dynamically using DexKit pattern analysis, opcode
 Every hook registration is isolated within safe runtime execution boundaries. If an obfuscated symbol cannot be resolved due to an unexpected upstream UI rewrite, only the specific affected feature degrades gracefully — preventing application crashes.
 
 ### 3. 🎯 Truthful Application Targets
-Bundle entries explicitly declare verified application version ranges (`AppPatchInfo.targets`). NexAlloyNext uses these declarations to drive honest compatibility badges and update indicators in the manager UI.
+Bundle entries explicitly declare verified application version ranges (`AppPatchInfo.targets`). NexFusion uses these declarations to drive honest compatibility badges and update indicators in the manager UI.
 
 ---
 
 ## 📦 Bundle Structure & Contract
 
-A `.nxb` file is a signed APK container loaded directly into process memory by NexAlloyNext. The manager inspects the following `meta-data` entries from the bundle's `AndroidManifest.xml`:
+A `.nxb` file is a signed APK container loaded directly into process memory by NexFusion. The manager inspects the following `meta-data` entries from the bundle's `AndroidManifest.xml`:
 
 | `meta-data` Key | Value Type | Description |
 |---|---|---|
-| `nexalloy.bundle.entry` | FQCN Class | Class implementing `io.github.nexalloy.PatchBundle` (entry point) |
-| `nexalloy.bundle.apiVersion` | Integer | Patcher API version the bundle was compiled against (e.g. `1`) |
-| `nexalloy.bundle.author` | String | Bundle author displayed in the NexAlloyNext manager |
-| `nexalloy.bundle.description` | `@string` | String resource describing the bundle's capabilities |
-| `nexalloy.bundle.compatibilitySeries` | String | Compatible manager compatibility series (e.g. `3.6`) |
-| `nexalloy.bundle.minManagerVersion` | String | Minimum required manager version (e.g. `3.6.0`) |
-| `nexalloy.bundle.maxManagerVersion` | String | Maximum supported manager version (or empty for forward compatibility) |
+| `nexfusion.bundle.entry` | FQCN Class | Class implementing `io.github.nexfusion.PatchBundle` (entry point) |
+| `nexfusion.bundle.apiVersion` | Integer | Patcher API version the bundle was compiled against (e.g. `1`) |
+| `nexfusion.bundle.author` | String | Bundle author displayed in the NexFusion manager |
+| `nexfusion.bundle.description` | `@string` | String resource describing the bundle's capabilities |
+| `nexfusion.bundle.compatibilitySeries` | String | Compatible manager compatibility series (e.g. `3.6`) |
+| `nexfusion.bundle.minManagerVersion` | String | Minimum required manager version (e.g. `3.6.0`) |
+| `nexfusion.bundle.maxManagerVersion` | String | Maximum supported manager version (or empty for forward compatibility) |
 
 ### Manifest Contract & Resource Isolation
-- **Entry Point:** The entry class implements `io.github.nexalloy.PatchBundle`, returning the list of supported applications (`AppPatchInfo`) and their verified versions.
+- **Entry Point:** The entry class implements `io.github.nexfusion.PatchBundle`, returning the list of supported applications (`AppPatchInfo`) and their verified versions.
 - **Resource Partitioning:** Custom UI resources are assigned dedicated package IDs (`0x02`–`0x7e`, never the application ID `0x7f`) to prevent resource collision when multiple bundles hook into the same process.
 
 ---
 
 ## 🚀 Getting Started
 
-1. **📥 Install NexAlloyNext:** Download and install the manager from [NexAlloyNext Releases](https://github.com/a092devs/NexAlloyNext/releases).
-2. **🛡️ Configure LSPosed:** Enable the **NexAlloyNext** module in LSPosed and add your desired target applications to its scope.
-3. **📦 Install Patch Bundles:** Open NexAlloyNext → **Patches** tab. The official companion repository (`a092devs/NexAlloyNext-Patches`) is pre-configured; tap **Install** on `NexFusion Patches`.
+1. **📥 Install NexFusion:** Download and install the manager from [NexFusion Releases](https://github.com/a092devs/NexFusion/releases).
+2. **🛡️ Configure LSPosed:** Enable the **NexFusion** module in LSPosed and add your desired target applications to its scope.
+3. **📦 Install Patch Bundles:** Open NexFusion → **Patches** tab. The official companion repository (`a092devs/Nexfusion-Patches`) is pre-configured; tap **Install** on `NexFusion Patches`.
 4. **⚙️ Toggle Desired Patches:** Open the **Home** tab, tap any target application card, and enable your preferred runtime hooks.
 5. **🔄 Apply & Restart:** Tap **Force Stop** or use the 1-tap **App Info** shortcut to restart the target application and let LSPosed attach the updated bytecode hooks.
 
@@ -86,7 +86,7 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 
 ### Curated Distributions
 
-- **`nexalloy`:** Streaming core patches for YouTube, YouTube Music, and Google Photos cloud storage spoofing.
+- **`nexfusion`:** Streaming core patches for YouTube, YouTube Music, and Google Photos cloud storage spoofing.
 - **`nexfusion` (`NexFusion Patches`):** Unified community runtime distribution covering all **19 supported application targets** in a single `.nxb` package.
 
 ---
@@ -109,7 +109,7 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 | **Instagram** | `com.instagram.android` | Media downloader (posts, multi-photo carousels, Reels, Stories, Highlights, profile pictures) with custom save directory, per-username subfolders, and timestamp naming; sponsored post, Reels, and Story ad removal; anonymous Story and Live stream viewing; tracking link sanitizer; ghost mode. Verified targets: 453.0.0.57.79, 453.0.0.55.79, 452.1.0.53.64, 452.0.0.48.64, 451.0.0.53.80, 450.0.0.46.79, 447.0.0.55.81. |
 | **Facebook** | `com.facebook.katana` | Media downloader for photos, videos, Reels, and Stories with DASH stream and audio extraction; hide sponsored posts, Reels, and Stories; screenshot restriction bypass; telemetry blocking. Verified targets: 585.0.0.47.54, 584.0.0.51.56, 583.0.0.39.55, 582.0.0.50.54, 581.0.0.45.54. |
 | **X (Twitter)** | `com.twitter.android` | Promoted post and ad removal; video and GIF download unlock; bypass Compose sensitive media blur interstitials without tap-to-reveal; outdated-app warning and forced in-app update block; telemetry and analytics blackholing; Premium upsell removal; tracking link sanitizer. Verified targets: 12.38.1-prod.01, 12.38.0-prod.01, 12.37.2-prod.01, 12.36.1-prod.01, 12.35.0-prod.01. |
-| **Reddit** | `com.reddit.frontpage` | Feed and comment ad removal, start as guest mode, sanitize sharing URLs, suppress screenshot banner, custom feed sorting, Redgifs audio unmuting. Verified targets: 2026.43.1, 2026.43.0, 2026.42.0, 2026.41.0, 2026.38.0, 2026.37.0, 2026.36.0, 2026.24.0, 2026.14.0. |
+| **Reddit** | `com.reddit.frontpage` | Feed and comment ad removal, start as guest mode, sanitize sharing URLs, suppress screenshot banner, transparent navigation bar, colorize comment indent lines, custom feed sorting, Redgifs audio unmuting. Verified targets: 2026.43.1, 2026.43.0, 2026.42.0, 2026.41.0, 2026.38.0, 2026.37.0, 2026.36.0, 2026.24.0, 2026.14.0. |
 | **Discord** | `com.discord` | Suppress crash telemetry, analytics, touch logging, install attribution, and advertising identifiers; native phone font support. Verified targets: 351.11, 350.8, 349.9, 348.10. |
 | **Crunchyroll** | `com.crunchyroll.crunchyroid` | Native Picture-in-Picture mode with contextual Skip Intro and Skip Credits controls; remove titles from Continue Watching feed. Verified targets: 3.126.0, 3.117.0. |
 | **LinkedIn** | `com.linkedin.android` | 1-tap media downloader for photos, multi-image carousels, and progressive MP4 videos with download overlay button; sanitize copy and share links; bypass `safety/go` interstitial redirects directly; hide suggested posts (`Suggested`, `Disarankan`); hide promoted jobs (`Promoted`, `Dipromosikan`); hide Premium upsell banners in navigation panel and SDUI feeds; feed filters (celebrations, job cards, reposts, videos, reaction counts, new posts pill); Material You dynamic wallpaper palette (Android 12+); suppress tracking telemetry. Universal compatibility across all LinkedIn versions (e.g. 4.1.1267, 4.1.1266, 4.1.1264, 4.1.1255+). |
@@ -135,8 +135,8 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 ### Build Commands
 ```bash
 # Clone the repository
-git clone https://github.com/a092devs/NexAlloyNext-Patches.git
-cd NexAlloyNext-Patches
+git clone https://github.com/a092devs/Nexfusion-Patches.git
+cd Nexfusion-Patches
 
 # Run unit tests across all bundles
 ./gradlew testDebugUnitTest
@@ -154,13 +154,13 @@ The compiled bundles will be generated in `bundles/<bundle-name>/build/outputs/b
 
 ## 🌐 Discovery & Release Pipeline
 
-NexAlloyNext discovers bundles through **patch sources**. A source can be configured as:
+NexFusion discovers bundles through **patch sources**. A source can be configured as:
 - **GitHub Release Source:** A repository (`owner/repo`) whose latest release provides compiled `*.nxb` assets.
 - **Direct Feed Source:** A JSON endpoint declaring bundle versions, download URLs, and metadata:
   ```json
   {
-    "version": "3.6.0",
-    "download_url": "https://github.com/a092devs/NexAlloyNext-Patches/releases/download/3.6.0/nexfusion-3.6.0.nxb",
+    "version": "4.0.0",
+    "download_url": "https://github.com/a092devs/Nexfusion-Patches/releases/download/4.0.0/nexfusion-4.0.0.nxb",
     "description": "Unified community runtime patch bundle"
   }
   ```
@@ -180,7 +180,7 @@ Contributions, bug reports, and pull requests are welcome!
 
 ## 📜 Credits & Acknowledgments
 
-NexAlloyNext-Patches is developed and maintained by **a092devs**. We gratefully acknowledge the open-source projects, reverse engineers, and library authors whose research and tools empower our patch ecosystem:
+Nexfusion-Patches is developed and maintained by **a092devs**. We gratefully acknowledge the open-source projects, reverse engineers, and library authors whose research and tools empower our patch ecosystem:
 
 | Project | Contribution |
 |---|---|
@@ -194,10 +194,10 @@ NexAlloyNext-Patches is developed and maintained by **a092devs**. We gratefully 
 | **[heyymichii](https://github.com/heyymichii/michii-patches)** | Share-link cleaning, direct navigation, and tracking removal |
 | **[ak800i](https://github.com/ak800i/mixplorer-patches-for-morphe)** | Scoped-storage file sharing fix for Android 11+ |
 | **[jkennethcarino](https://github.com/jkennethcarino/adobo)** | Screenshot-banner suppression, link sanitization, and UI hooks |
-| **[gnadgnaoh](https://github.com/gnadgnaoh/NexAlloy-XES)** | Inbox promotion and Discover feed ad filtering |
+| **[gnadgnaoh](https://github.com/gnadgnaoh/NexFusion-XES)** | Inbox promotion and Discover feed ad filtering |
 
 ---
 
 ## ⚖️ License
 
-NexAlloyNext-Patches is open-source software developed by **a092devs** and licensed under the **GNU General Public License v3.0** — see [LICENSE](LICENSE). Third-party libraries, ported feature specifications, and upstream dependencies retain their respective licenses and attribution.
+Nexfusion-Patches is open-source software developed by **a092devs** and licensed under the **GNU General Public License v3.0** — see [LICENSE](LICENSE). Third-party libraries, ported feature specifications, and upstream dependencies retain their respective licenses and attribution.

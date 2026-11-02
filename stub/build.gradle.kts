@@ -25,3 +25,5 @@ androidComponents {
         variant.enableAndroidTest = false
     }
 }
+
+// Nexfusion stub module

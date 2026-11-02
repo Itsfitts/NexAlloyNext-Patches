@@ -1,42 +1,42 @@
 # Development Guide
 
-This repository holds the patch bundles of [NexAlloyNext](https://github.com/a092devs/NexAlloyNext). How bundles are
+This repository holds the patch bundles of [NexFusion](https://github.com/a092devs/NexFusion). How bundles are
 loaded, the bundle format and the rules for bundles are described in its
-[development guide](https://github.com/a092devs/NexAlloyNext/blob/main/DEVELOPMENT.md).
+[development guide](https://github.com/a092devs/NexFusion/blob/main/DEVELOPMENT.md).
 
 ```text
-📦 NexAlloyNext-Patches
- ├ build-logic/    Removed; nexalloy.bundle is consumed from NexAlloyNext's Maven repository
+📦 Nexfusion-Patches
+ ├ build-logic/    Removed; nexfusion.bundle is consumed from NexFusion's Maven repository
  ├ bundles/
- │  ├ nexalloy/    NexAlloy Patches: Morphe, ReVanced and hoodles patches
+ │  ├ nexfusion/    NexFusion Patches: Morphe, ReVanced and hoodles patches
  │  ├ nexfusion/    NexFusion Patches: community ports (Discord, Facebook, Gboard, Instagram, LinkedIn, MiXplorer, Proton VPN, Reddit, Spotify, X)
  │  └ testing/     Fingerprint test harness shared by the bundles
  └ stub/           Stubs of YouTube classes used by the Morphe extensions
 ```
 
-The bundles compile against the patcher API `io.github.nexalloy:patcher` (version `patcher` in
-[libs.versions.toml](gradle/libs.versions.toml)), published to `https://raw.githubusercontent.com/a092devs/NexAlloyNext/maven`.
-To build against a local NexAlloyNext checkout, run `./gradlew :patcher:publishAllPublicationsToReleaseRepository`
-there and pass `-PnexalloyMaven=file:///path/to/NexAlloyNext/build/maven` here.
+The bundles compile against the patcher API `io.github.nexfusion:patcher` (version `patcher` in
+[libs.versions.toml](gradle/libs.versions.toml)), published to `https://raw.githubusercontent.com/a092devs/NexFusion/maven`.
+To build against a local NexFusion checkout, run `./gradlew :patcher:publishAllPublicationsToReleaseRepository`
+there and pass `-PnexfusionMaven=file:///path/to/NexFusion/build/maven` here.
 
 ```sh
 ./gradlew assembleBundle   # bundles/*/build/outputs/bundle/*.nxb
 ```
 
-The `nexalloy.bundle` convention plugin is also published by NexAlloyNext. Its
-version is pinned as `nexalloyBuildLogic` in
+The `nexfusion.bundle` convention plugin is also published by NexFusion. Its
+version is pinned as `nexfusionBuildLogic` in
 [libs.versions.toml](gradle/libs.versions.toml). Update that version only after
 the corresponding plugin has been published.
 
 ### Upstream submodules
 
-`morphe-patches` and `morphe-patches-library` are NexAlloy-maintained forks
+`morphe-patches` and `morphe-patches-library` are NexFusion-maintained forks
 of the upstream extension projects. Changes to files inside either submodule
 must be committed and pushed in that submodule first, then the resulting
 submodule commit must be updated in this repository:
 
 ```sh
-git -C morphe-patches checkout nexalloy
+git -C morphe-patches checkout nexfusion
 git -C morphe-patches pull --ff-only
 git add morphe-patches
 git commit -m "chore: update morphe-patches"
@@ -47,7 +47,7 @@ release. Both are intentionally excluded from version control.
 
 ### Adding an app
 
-Add the app to the bundle's entry point, e.g. [NexAlloyPatches.kt](bundles/nexalloy/src/main/java/io/github/nexalloy/patches/NexAlloyPatches.kt):
+Add the app to the bundle's entry point, e.g. [NexFusionPatches.kt](bundles/nexfusion/src/main/java/io/github/nexfusion/patches/NexFusionPatches.kt):
 
 ```kotlin
 app("Contoso", "com.contoso.app", ContosoPatches),
@@ -67,7 +67,7 @@ Patches follow this structure:
 ```kotlin
 package com.example.patches.contoso.misc.unlock.plus
 
-import io.github.nexalloy.morphe.Fingerprint
+import io.github.nexfusion.morphe.Fingerprint
 
 object IsPlusUnlockedFingerprint : Fingerprint(
     returnType = "Z",
@@ -80,7 +80,7 @@ object IsPlusUnlockedFingerprint : Fingerprint(
 package com.example.patches.contoso.misc.unlock.plus
 
 import de.robv.android.xposed.XC_MethodReplacement.returnConstant
-import io.github.nexalloy.patch
+import io.github.nexfusion.patch
 
 val UnlockPlus = patch(name = "Unlock Plus") {
     IsPlusUnlockedFingerprint.hookMethod(returnConstant(true))
@@ -91,7 +91,7 @@ Patches named `""` or starting with `<` are internal: they always run and are hi
 
 ### Porting Upstream Patches
 
-The [FingerprintCompat.kt](patcher/src/main/java/io/github/nexalloy/morphe/FingerprintCompat.kt) utility assists in translating ReVanced Patcher API calls to DexKit Matchers. While simple fingerprints can often be directly copied, consider the following translation patterns for complex cases:
+The [FingerprintCompat.kt](patcher/src/main/java/io/github/nexfusion/morphe/FingerprintCompat.kt) utility assists in translating ReVanced Patcher API calls to DexKit Matchers. While simple fingerprints can often be directly copied, consider the following translation patterns for complex cases:
 
 1.  **Literal Mapping:**
     If an upstream patch defines a literal within the patch file (e.g., `aLiteral = resourceMappings["id", "aLiteral"]`) for use in a fingerprint, convert it to a getter property in the corresponding `Fingerprints.kt` file.
@@ -185,16 +185,16 @@ The [FingerprintCompat.kt](patcher/src/main/java/io/github/nexalloy/morphe/Finge
 As per ReVanced Patcher documentation:
 > Instead of involving many abstract changes in one patch or writing entire methods or classes in a patch, you can write code in extensions.
 
-The NexAlloy Patches bundle compiles the extensions of the `morphe-patches` and `morphe-patches-library` submodules
-(NexAlloy forks). The nexfusion Patches bundle carries the Spotify extension code of the
+The NexFusion Patches bundle compiles the extensions of the `morphe-patches` and `morphe-patches-library` submodules
+(NexFusion forks). The nexfusion Patches bundle carries the Spotify extension code of the
 [2eno-patches](https://github.com/2eno/2eno-patches) project vendored in-tree under
 `bundles/nexfusion/src/main/java/app/twoeno/extension` (GPL-3.0, see the bundle's NOTICE).
 
 ## Unit Testing
 
 Bundles test their fingerprints against real APKs with
-[FingerprintsKtTest.kt](bundles/testing/java/io/github/nexalloy/FingerprintsKtTest.kt). Place APKs into the bundle's
-`binaries/` directory (e.g. `bundles/nexalloy/binaries/`), prefixed with their package name
+[FingerprintsKtTest.kt](bundles/testing/java/io/github/nexfusion/FingerprintsKtTest.kt). Place APKs into the bundle's
+`binaries/` directory (e.g. `bundles/nexfusion/binaries/`), prefixed with their package name
 (e.g. `com.google.android.youtube-20.10.38.apk`), and list the app in the bundle's `FingerprintTestTargets.kt`.
 
 ```sh
@@ -205,4 +205,4 @@ Bundles test their fingerprints against real APKs with
 
 Bump the `versionCode`/`versionName` of the changed bundles, then push a tag (`X.Y.Z`, or `X.Y.Z-suffix` for a
 pre-release) or run the Release workflow with a tag name. It attaches every bundle `.nxb` to a GitHub release, which
-NexAlloy installs from this patch source.
+NexFusion installs from this patch source.

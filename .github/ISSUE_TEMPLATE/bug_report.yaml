@@ -7,8 +7,8 @@ body:
       value: |
         Before creating a new bug report, please keep the following in mind:
 
-        - **Do not submit a duplicate bug report**: Search for existing bug reports [here](https://github.com/a092devs/NexAlloyNext-Patches/issues?q=%5BBug%5D).
-        - **Check the troubleshooting guide**: A solution to your issue might be found in the [FAQ](https://github.com/a092devs/NexAlloyNext#readme).
+        - **Do not submit a duplicate bug report**: Search for existing bug reports [here](https://github.com/a092devs/Nexfusion-Patches/issues?q=%5BBug%5D).
+        - **Check the troubleshooting guide**: A solution to your issue might be found in the [FAQ](https://github.com/a092devs/NexFusion#readme).
   - type: checkboxes
     attributes:
       label: Acknowledgements
@@ -29,8 +29,8 @@ body:
     attributes:
       label: Patch bundles
       description: |
-        Installed patch bundles and their versions, as listed in NexAlloy > Patch sources.
-        Example: NexAlloy Patches 1.0.7, NexFusion Patches 3.2.0.
+        Installed patch bundles and their versions, as listed in NexFusion > Patch sources.
+        Example: Nexfusion-Patches 4.0.0.
     validations:
       required: true
   - type: textarea
@@ -47,7 +47,7 @@ body:
     attributes:
       label: Error logs
       description: |
-        - If You are reporting a YouTube bug, enable Debug Logging in YouTube Settings -> ReVanced Settings -> Miscellaneous -> Debugging.
+        - If you are reporting a YouTube bug, enable Debug Logging in YouTube Settings -> Morphe -> Miscellaneous -> Debugging.
         - Reproduce the bug
         - Open LSPosed Manager -> Logs
         - Save logs

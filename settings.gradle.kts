@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
-        maven(url = "https://raw.githubusercontent.com/a092devs/NexAlloyNext/maven")
+        providers.gradleProperty("nexfusionMaven").orNull?.let { maven(url = it) }
+        maven(url = "https://raw.githubusercontent.com/a092devs/NexFusion/maven")
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -19,8 +20,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://api.xposed.info")
-        // The NexAlloy patcher API, published by https://github.com/a092devs/NexAlloyNext.
-        maven(url = providers.gradleProperty("nexalloyMaven").get())
+        // The NexFusion patcher API, published by https://github.com/a092devs/NexFusion.
+        maven(url = providers.gradleProperty("nexfusionMaven").get())
     }
 }
 
@@ -33,7 +34,7 @@ android {
     minSdk = 27
 }
 
-rootProject.name = "NexAlloyNext-Patches"
+rootProject.name = "Nexfusion-Patches"
 
 include(":stub")
 include(":bundles:nexfusion")

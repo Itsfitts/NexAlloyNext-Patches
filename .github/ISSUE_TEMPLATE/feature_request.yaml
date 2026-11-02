@@ -6,7 +6,7 @@ body:
   attributes:
     value: |
       **PLEASE READ BEFORE SUBMITTING**
-      This project is an Xposed port of Morphe ([morphe.software](https://morphe.software/)). Features that do not exist in the official project will not be accepted. Some apps are not patchable on their latest versions due to technical limitations.
+      Please describe your proposed feature clearly and verify that it does not duplicate an existing request. Note that some target applications or features may have technical constraints under runtime hooking.
 - type: textarea
   attributes:
     label: Describe the feature you'd like

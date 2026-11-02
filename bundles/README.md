@@ -1,23 +1,23 @@
 # Bundle Development Guide
 
-A NexAlloy patch bundle (`*.nxb`) is a **signed APK** produced by the `nexalloy.bundle` Gradle
-plugin. NexAlloyNext loads the bundle's code and resources into the target app's process at
+A NexFusion patch bundle (`*.nxb`) is a **signed APK** produced by the `nexfusion.bundle` Gradle
+plugin. NexFusion loads the bundle's code and resources into the target app's process at
 startup through LSPosed; the target APK on disk is **never modified, rebuilt, or re-signed**.
 
 ## Bundle manifest contract
 
 Every bundle declares four `meta-data` entries in its `AndroidManifest.xml`. The plugin fills
-them in from the `nexalloyBundle { … }` block:
+them in from the `nexfusionBundle { … }` block:
 
 | `meta-data` key | Filled from | Purpose |
 |---|---|---|
-| `nexalloy.bundle.entry` | `entry` | Fully-qualified class implementing `io.github.nexalloy.PatchBundle` |
-| `nexalloy.bundle.apiVersion` | `patcherApiVersion` (default `1`) | Patcher API version the bundle was built against |
-| `nexalloy.bundle.author` | `author` | Author shown in the NexAlloy manager |
-| `nexalloy.bundle.description` | `descriptionResource` | String resource describing the bundle |
-| `nexalloy.bundle.compatibilitySeries` | `compatibilitySeries` | Compatible manager compatibility series (e.g. `3.2`) |
-| `nexalloy.bundle.minManagerVersion` | `minManagerVersion` | Minimum required manager version (e.g. `3.2.0`) |
-| `nexalloy.bundle.maxManagerVersion` | `maxManagerVersion` | Maximum supported manager version |
+| `nexfusion.bundle.entry` | `entry` | Fully-qualified class implementing `io.github.nexfusion.PatchBundle` |
+| `nexfusion.bundle.apiVersion` | `patcherApiVersion` (default `1`) | Patcher API version the bundle was built against |
+| `nexfusion.bundle.author` | `author` | Author shown in the NexFusion manager |
+| `nexfusion.bundle.description` | `descriptionResource` | String resource describing the bundle |
+| `nexfusion.bundle.compatibilitySeries` | `compatibilitySeries` | Compatible manager compatibility series (e.g. `3.2`) |
+| `nexfusion.bundle.minManagerVersion` | `minManagerVersion` | Minimum required manager version (e.g. `3.2.0`) |
+| `nexfusion.bundle.maxManagerVersion` | `maxManagerVersion` | Maximum supported manager version |
 
 
 ## Creating a bundle
@@ -26,27 +26,27 @@ them in from the `nexalloyBundle { … }` block:
 
 ```kotlin
 plugins {
-    id("nexalloy.bundle")
+    id("nexfusion.bundle")
 }
 
 android {
-    namespace = "io.github.nexalloy.patches.example"
+    namespace = "io.github.nexfusion.patches.example"
     defaultConfig {
-        applicationId = "io.github.nexalloy.patches.example"
+        applicationId = "io.github.nexfusion.patches.example"
         versionCode = 1
         versionName = "1.0.0"
     }
 }
 
-nexalloyBundle {
-    entry = "io.github.nexalloy.example.ExamplePatches"
+nexfusionBundle {
+    entry = "io.github.nexfusion.example.ExamplePatches"
     author = "Example"
     descriptionResource = "bundle_description"
     resourcePackageId = 0x51
 }
 
 dependencies {
-    compileOnly(libs.nexalloy.patcher)
+    compileOnly(libs.nexfusion.patcher)
 }
 ```
 
@@ -75,7 +75,7 @@ object ExamplePatches : PatchBundle {
 ### Resource package ids
 
 `resourcePackageId` must be between `0x02` and `0x7e`, distinct from every other bundle that is
-loaded into the same app, and must never use the app id `0x7f`. NexAlloyNext refuses to install
+loaded into the same app, and must never use the app id `0x7f`. NexFusion refuses to install
 a bundle whose resource package id collides with an already installed bundle.
 
 ## Hook conventions
@@ -108,8 +108,8 @@ Conventions used across this repository:
   version; never advertise functionality the hooks do not install.
 - **No APK-level work.** No resource edits, no manifest rewrites, no code written to disk.
 
-The `nexalloy.bundle` plugin disables minification and excludes the Kotlin stdlib and AndroidX
-annotations from packaging: those classes are provided by NexAlloyNext at runtime, so the bundle
+The `nexfusion.bundle` plugin disables minification and excludes the Kotlin stdlib and AndroidX
+annotations from packaging: those classes are provided by NexFusion at runtime, so the bundle
 must not carry its own copies.
 
 ## Building
@@ -148,4 +148,4 @@ Bundles that port or adapt upstream code must record the upstream repository and
 license notices. Code derived from Morphe, ReVanced, Piko, or other GPL-3.0 projects remains
 GPL-3.0 and is credited in the repository README. A worked example is the `nexfusion` bundle,
 which lists every ported source, its license and the ported files in
-`bundles/nexfusion/src/main/java/io/github/nexalloy/nexfusion/NOTICE`.
+`bundles/nexfusion/src/main/java/io/github/nexfusion/nexfusion/NOTICE`.

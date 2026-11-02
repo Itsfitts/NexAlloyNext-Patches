@@ -28,3 +28,5 @@ docs/
 binaries/
 compat-binaries/
 *.apk
+
+# Nexfusion build metadata
