@@ -147,7 +147,11 @@ fun PatchExecutor.enableGboardPreferences(
                 Boolean::class.javaPrimitiveType,
                 object : XC_MethodHook() {
                     override fun beforeHookedMethod(param: MethodHookParam) {
+                        val sp = param.thisObject as? android.content.SharedPreferences
                         val key = param.args[0] as? String ?: return
+                        if (sp != null && sp.contains(key)) {
+                            return
+                        }
                         val override = dynamicBooleanPrefOverrides[key] ?: return
                         param.result = override
                     }
@@ -160,7 +164,11 @@ fun PatchExecutor.enableGboardPreferences(
                 String::class.java,
                 object : XC_MethodHook() {
                     override fun beforeHookedMethod(param: MethodHookParam) {
+                        val sp = param.thisObject as? android.content.SharedPreferences
                         val key = param.args[0] as? String ?: return
+                        if (sp != null && sp.contains(key)) {
+                            return
+                        }
                         val override = dynamicStringPrefOverrides[key] ?: return
                         param.result = override
                     }

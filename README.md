@@ -6,7 +6,7 @@
     <a href="https://github.com/a092devs/NexAlloyNext-Patches/releases"><img src="https://img.shields.io/github/v/release/a092devs/NexAlloyNext-Patches?style=flat-square&color=0284C7&label=Release" alt="Latest Release" /></a>
     <img src="https://img.shields.io/badge/Format-.nxb%20(Signed%20APK)-6366F1?style=flat-square" alt="Format: .nxb" />
     <img src="https://img.shields.io/badge/LSPosed-API%20101-blue?style=flat-square" alt="LSPosed API 101" />
-    <img src="https://img.shields.io/badge/Targets-18%20Applications-10B981?style=flat-square" alt="Targets: 18 Applications" />
+    <img src="https://img.shields.io/badge/Targets-19%20Applications-10B981?style=flat-square" alt="Targets: 19 Applications" />
     <img src="https://img.shields.io/badge/Icon-Hardware%20Silicon%20Matrix-0284C7?style=flat-square" alt="Hardware Silicon Matrix" />
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-orange?style=flat-square" alt="GPL-3.0" /></a>
   </p>
@@ -87,7 +87,7 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 ### Curated Distributions
 
 - **`nexalloy`:** Streaming core patches for YouTube, YouTube Music, and Google Photos cloud storage spoofing.
-- **`nexfusion` (`NexFusion Patches`):** Unified community runtime distribution covering all **18 supported application targets** in a single `.nxb` package.
+- **`nexfusion` (`NexFusion Patches`):** Unified community runtime distribution covering all **19 supported application targets** in a single `.nxb` package.
 
 ---
 
@@ -98,7 +98,8 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 |---|---|---|
 | **YouTube** | `com.google.android.youtube` | Remove video and feed ads, SponsorBlock integration, background playback, link sanitization, custom playback speeds & quality selector, swipe volume/brightness controls, layout component filtering, DeArrow title/thumbnail replacement, Litho node bypass, Shorts resuming, Ambient mode, Miniplayer, PiP seek buttons, disable playlist autoplay, channel search fingerprint fix, guarded navigation bar hook against abstract methods. |
 | **YouTube Music** | `com.google.android.apps.youtube.music` | Background audio playback, audio ad removal, exclusive audio stream playback, hide upgrade buttons, suppress promotional banners. |
-| **Spotify** | `com.spotify.music` | Audio ad muting, hide ad views & video interstitial banners, hide Premium navigation tab, Dynamic Material You theme, custom rounded UI corners, tracking link cleaner. |
+| **Kick** | `com.kick.mobile` | Live stream & VOD ad blocking, background audio playback, custom chat emotes (7TV, BTTV, FFZ), telemetry suppression, AMOLED black theme. |
+| **Twitch** | `tv.twitch.android.app` | Stream and display ad blocking, 7TV / BTTV / FFZ third-party chat emotes, background audio playback, telemetry suppression, AMOLED black theme. |
 
 #### 💬 Social Networks & Messaging
 | Application | Package Identifier | Key Patch Capabilities |
@@ -117,10 +118,10 @@ A `.nxb` file is a signed APK container loaded directly into process memory by N
 | Application | Package Identifier | Key Patch Capabilities |
 |---|---|---|
 | **Google Photos** | `com.google.android.apps.photos` | Device spoofing for unlimited original-quality Google Photos cloud storage backup, DCIM folder backup control. |
+| **Google Maps** | `com.google.android.apps.maps` | Sponsored pin and search ad suppression, high refresh rate unlock (90/120 Hz), telemetry blocking, hide AI clutter, AMOLED black theme. |
 | **Gboard** | `com.google.android.inputmethod.latin` | Rounded keycap styling and expressive UI borders; Google Sans Flex typography & GM3 Expressive styling; proactive post-correction undo controls; Quick & Magic Emoji (Emojify); expanded AI writing tools (proofread across apps, streaming UI, inline replace button); spellchecker chips UI; scan text OCR; screenshot chips & clipboard paste suggestions; spacebar cursor trackpad gesture control. Verified targets: 18.5.6, 18.5.4, 18.5.3, 18.4.1. |
 | **Gmail** | `com.google.android.gm` | Suppress sponsored promotional and advertising cards in personal inboxes. |
 | **Google App (Discover)** | `com.google.android.googlequicksearchbox` | Filter sponsored cards, shopping ads, and promotional content in the Discover feed. |
-| **MiXplorer** | `com.mixplorer` | Fix scoped-storage file sharing by masking unreadable `_data` paths on Android 11+. |
 | **Proton VPN** | `ch.protonvpn.android` | Suppress upgrade prompts, unlock NetShield UI toggles, disable telemetry and observability background workers. |
 
 ---

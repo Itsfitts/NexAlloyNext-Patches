@@ -7,6 +7,17 @@ falling back to generated commit notes when no section exists. Android CI
 validates changes; the dedicated release workflow builds and publishes release
 bundles after CI succeeds.
 
+## 3.6.2
+
+- `NexFusion` 3.6.2:
+  * Gboard Emoji Fast Access Row Bug Fix:
+    - Fixed an issue where the "Emoji fast access row" setting in Gboard settings remained enabled after being disabled.
+    - Fixed on-keyboard "Remove row" action being ignored by honoring persisted user choices and preventing dynamic preference hooks from overriding explicitly saved settings.
+  * Decommissioned Spotify Support:
+    - Removed Spotify from the patch suite and bundle manifests.
+  * Minimum Manager Version:
+    - Upgraded minimum manager version requirement to `3.6.2`.
+
 ## 3.6.1
 
 - `NexFusion` 3.6.1:

@@ -20,7 +20,6 @@ import io.github.nexalloy.nexfusion.linkedin.LinkedInPatches
 import io.github.nexalloy.nexfusion.maps.GoogleMapsPatches
 import io.github.nexalloy.nexfusion.protonvpn.ProtonVpnPatches
 import io.github.nexalloy.nexfusion.reddit.RedditPatches
-import io.github.nexalloy.nexfusion.spotify.SpotifyPatches
 import io.github.nexalloy.nexfusion.telegram.TelegramPatches
 import io.github.nexalloy.nexfusion.twitch.TwitchPatches
 import io.github.nexalloy.nexfusion.twitter.TwitterPatches
@@ -105,12 +104,6 @@ object NexFusionPatches : PatchBundle {
             packageName = "com.reddit.frontpage",
             patches = RedditPatches,
             appIconColor = 0xFF4500,
-        ),
-        AppPatchInfo(
-            appName = "Spotify",
-            packageName = "com.spotify.music",
-            patches = SpotifyPatches,
-            appIconColor = 0x1ED760,
         ),
         AppPatchInfo(
             appName = "X",

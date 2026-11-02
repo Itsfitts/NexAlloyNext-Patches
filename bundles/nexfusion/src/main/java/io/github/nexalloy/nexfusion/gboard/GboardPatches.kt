@@ -522,7 +522,7 @@ val GboardQuickAndMagicEmoji = patch(
     description = "Enables the fast-access emoji bar and Gemini-powered Magic Emoji suggestion button.",
 ) {
     gboardFlagOverrides(
-        "enable_fast_access_bar" to FlagOverride.forceTrue(),
+        "enable_fast_access_bar" to FlagOverride.promote(),
         "fast_access_bar_app_whitelist" to FlagOverride.forceString("*"),
         "enable_emojify" to FlagOverride.forceTrue(),
         "enable_emojify_settings_option" to FlagOverride.forceTrue(),
@@ -534,7 +534,6 @@ val GboardQuickAndMagicEmoji = patch(
     )
     enableGboardPreferences(
         booleans = mapOf(
-            "enable_fast_access_bar" to true,
             "enable_emojify" to true,
         )
     )
