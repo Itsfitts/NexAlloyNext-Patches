@@ -361,7 +361,7 @@ tasks.withType<Test>().configureEach {
 dependencies {
     testImplementation(libs.nexfusion.patcher)
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
+    testImplementation(kotlin("reflect"))
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.jadx.core)
     testImplementation(libs.slf4j.simple)

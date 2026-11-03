@@ -47,7 +47,7 @@ release. Both are intentionally excluded from version control.
 
 ### Adding an app
 
-Add the app to the bundle's entry point, e.g. [NexFusionPatches.kt](bundles/nexfusion/src/main/java/io/github/nexfusion/patches/NexFusionPatches.kt):
+Add the app to the bundle's entry point, e.g. [NexFusionPatches.kt](bundles/nexfusion/src/main/java/io/github/nexfusion/nexfusion/NexFusionPatches.kt):
 
 ```kotlin
 app("Contoso", "com.contoso.app", ContosoPatches),
@@ -179,6 +179,18 @@ The [FingerprintCompat.kt](patcher/src/main/java/io/github/nexfusion/morphe/Fing
         }
     }
     ```
+
+### Automated Patch Source Importing from URLs
+
+Third-party patch repositories or Morphe URLs can be imported automatically into NexFusion bundles or built on dispatch:
+
+1. **GitHub Dispatch Workflow**: Trigger `.github/workflows/import-and-release.yml` with a `source_url` input (e.g. `https://morphe.software/add-source?github=kveld9/brave-patches`). The workflow clones, translates, compiles the `.nxb` bundle, and publishes a GitHub Release.
+2. **Local CLI Execution**:
+   ```sh
+   uv run .agents/skills/nexalloy-patch-importer/scripts/nexalloy_importer.py pipeline \
+       --url "https://morphe.software/add-source?github=kveld9/brave-patches" \
+       --bundle nexfusion
+   ```
 
 ### Extension code
 

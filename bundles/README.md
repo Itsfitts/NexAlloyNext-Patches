@@ -142,6 +142,25 @@ Bundles use two kinds of tests:
   so the same tests run on Windows, macOS, and Linux. The `binaries/` directories are untracked —
   without APKs, the fingerprint tests simply have no parameters to run against.
 
+## Importing Patch Sources from URLs
+
+Third-party Morphe, ReVanced, or custom patch repositories can be imported into a bundle or compiled into an `.nxb` artifact by providing a patch source URL:
+
+### Via GitHub Actions Workflow
+Dispatch the **Import Source & Build NXB** workflow (`import-and-release.yml`) with:
+- `source_url`: URL or repo slug (e.g. `https://morphe.software/add-source?github=kveld9/brave-patches` or `kveld9/brave-patches`).
+- `release_tag` (optional): Custom tag for the GitHub release.
+
+The workflow will scan, translate, compile, and publish the `.nxb` bundle as a GitHub Release asset.
+
+### Local Importing via CLI
+Run the patch importer skill locally:
+```bash
+uv run .agents/skills/nexalloy-patch-importer/scripts/nexalloy_importer.py pipeline \
+    --url "https://morphe.software/add-source?github=kveld9/brave-patches" \
+    --bundle nexfusion
+```
+
 ## Attribution
 
 Bundles that port or adapt upstream code must record the upstream repository and keep its

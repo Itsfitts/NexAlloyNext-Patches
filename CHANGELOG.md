@@ -32,6 +32,10 @@ bundles after CI succeeds.
   * Universal Compatibility & Integration:
     - Full bidirectional compatibility with the NexFusion manager ecosystem.
     - Preserved all runtime patch features, dynamic hook registries, and resource injection tables across 20 supported applications.
+  * Automated Patch Source Import & URL Dispatch:
+    - Added support for providing arbitrary Morphe or published patch repository URLs on dispatch to compile directly into `.nxb` release artifacts.
+    - Updated `nexalloy-patch-importer` skill and CLI (`nexalloy_importer.py`) to auto-translate upstream patches into fail-safe `io.github.nexfusion.*` runtime Xposed hooks.
+    - Integrated GitHub Actions workflow (`import-and-release.yml`) for end-to-end source scanning, translation, assembly, and GitHub Release asset publishing.
   * Zero-Trace Architecture & Optimization:
     - Cleaned up build artifacts, legacy tracking branches, and outdated namespace bindings.
 
