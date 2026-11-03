@@ -47,10 +47,12 @@ jobs:
 
             - name: Import upstream patch source via NexAlloy patch importer
               env:
-                  SOURCE_URL: ${{ inputs.source_url }}
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                 SOURCE_URL: ${{ inputs.source_url }}
+                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  uv run .agents/skills/nexalloy-patch-importer/scripts/nexalloy_importer.py pipeline --url "$SOURCE_URL"
+               uv run .agents/skills/nexalloy-patch-importer/scripts/nexalloy_importer.py pipeline \
+               --url "$SOURCE_URL" \
+               --output pipeline-report.json
 
             - name: Commit imported patches to branch
               if: ${{ inputs.push_to_branch }}
